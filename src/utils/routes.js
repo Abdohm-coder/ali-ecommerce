@@ -3,5 +3,6 @@ export const ROUTES = {
   CUSTOMER_INFO: "/customer-info",
   ORDER_INFO: "/order-info",
   SUCCESS: "/success",
-  PRIVACY: "/privacy"
+  DASHBOARD: "/admin-dashboard",
+  PRIVACY: "/privacy",
 };

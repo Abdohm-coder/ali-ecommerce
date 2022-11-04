@@ -8,6 +8,7 @@ import Success from "./pages/Success";
 import Home from "./pages/Home";
 import { ThemeProvider } from "./utils/theme.context";
 import Footer from "./components/footer";
+import Dashboard from "./pages/dashboard";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
         <section className="layout">
           <Router>
             <Routes>
-              <Route path={ROUTES.HOME} element={<Home />}></Route>
+              <Route element={<Home />}></Route>
+              <Route path={ROUTES.DASHBOARD} element={<Dashboard />}></Route>
               <Route
                 path={ROUTES.CUSTOMER_INFO}
                 element={<CustomerInfo />}></Route>
