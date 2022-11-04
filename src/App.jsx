@@ -7,7 +7,6 @@ import CustomerInfo from "./pages/CustomerInfo";
 import Success from "./pages/Success";
 import Home from "./pages/Home";
 import { ThemeProvider } from "./utils/theme.context";
-import Footer from "./components/footer";
 import Dashboard from "./pages/dashboard";
 
 function App() {
@@ -26,8 +25,6 @@ function App() {
           </Route>
         </Routes>
       </Router>
-
-      <Footer />
     </ThemeProvider>
   );
 }

@@ -2,6 +2,7 @@ import { ROUTES } from "../utils/routes";
 import { MoonIcon, SunIcon } from "../icons/index";
 import { useThemeContext } from "../utils/theme.context";
 import { Outlet } from "react-router-dom";
+import Footer from "./footer";
 
 export default function Navbar() {
   const { theme, setTheme } = useThemeContext();
@@ -36,6 +37,7 @@ export default function Navbar() {
         </section>
       </nav>
       <Outlet />
+      <Footer />
     </main>
   );
 }
