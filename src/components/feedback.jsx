@@ -42,11 +42,7 @@ export default function Feedback() {
       <div className="grid grid-cols-1 gap-8">
         {data.map(({ id, name, feedback, avatar }, index) => (
           <>
-            <div className="flex justify-end w-full space-x-8">
-              <div className="flex flex-col items-end text-right">
-                <strong className="text text-lg mb-2">{name}</strong>
-                <p className="text-light">{feedback}</p>
-              </div>
+            <div className="flex justify-end w-full">
               <span>
                 {avatar ? (
                   <img
@@ -60,6 +56,10 @@ export default function Feedback() {
                   </div>
                 )}
               </span>
+              <div className="flex flex-col items-end text-right mr-4">
+                <strong className="text text-lg mb-2 w-full">{name}</strong>
+                <p className="text-light">{feedback}</p>
+              </div>
             </div>
             {index !== data.length - 1 && <hr className="opacity-30" />}
           </>

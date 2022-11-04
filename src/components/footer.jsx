@@ -30,16 +30,6 @@ export default function Footer() {
     <footer className="dark:bg-footer bg-white mt-12 p-20">
       <section className="layout">
         <div className="flex justify-between w-full">
-          <ul className="flex flex-col space-y-1 text-white">
-            {data.map(({ id, label, text, link }) => (
-              <a href={link || "#"}>
-                <li className="flex items-center space-x-2 justify-end">
-                  {text && <p className="text">{text}</p>}
-                  {label && <p className="text-light">{label}</p>}
-                </li>
-              </a>
-            ))}
-          </ul>
           <a href={ROUTES.HOME}>
             <img
               className="object-contain w-16 max-w-full h-auto "
@@ -47,6 +37,16 @@ export default function Footer() {
               alt=""
             />
           </a>
+          <ul className="flex flex-col space-y-1 text-white">
+            {data.map(({ id, label, text, link }) => (
+              <a href={link || "#"}>
+                <li className="flex items-center">
+                  {label && <p className="text-light ml-2">{label}</p>}
+                  {text && <p className="text">{text}</p>}
+                </li>
+              </a>
+            ))}
+          </ul>
         </div>
       </section>
     </footer>

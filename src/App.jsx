@@ -14,18 +14,16 @@ function App() {
     <ThemeProvider>
       <Navbar />
       <main className="h-full min-h-screen pb-10">
-        <section className="layout">
-          <Router>
-            <Routes>
-              <Route path={ROUTES.HOME} element={<Home />}></Route>
-              <Route
-                path={ROUTES.CUSTOMER_INFO}
-                element={<CustomerInfo />}></Route>
-              <Route path={ROUTES.ORDER_INFO} element={<OrderInfo />}></Route>
-              <Route path={ROUTES.SUCCESS} element={<Success />}></Route>
-            </Routes>
-          </Router>
-        </section>
+        <Router>
+          <Routes>
+            <Route path={ROUTES.HOME} element={<Home />}></Route>
+            <Route
+              path={ROUTES.CUSTOMER_INFO}
+              element={<CustomerInfo />}></Route>
+            <Route path={ROUTES.ORDER_INFO} element={<OrderInfo />}></Route>
+            <Route path={ROUTES.SUCCESS} element={<Success />}></Route>
+          </Routes>
+        </Router>
       </main>
       <Footer />
     </ThemeProvider>

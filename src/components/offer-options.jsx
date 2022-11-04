@@ -10,7 +10,7 @@ export default function OfferOptions() {
     offer_options: [
       {
         id: "1",
-        count: " وسادة(1)",
+        count: "(1) وسادة",
         price: "2900 دج للواحدة",
         discount: "",
         badge: "العرض العادي",
@@ -58,15 +58,15 @@ export default function OfferOptions() {
         </Link>
         {data?.discount && (
           <div className="w-full flex items-center justify-between">
-            <Badge text={data.discount_text} />
-            <div className="flex items-center space-x-2 text-sm">
+            <div className="flex items-center text-sm">
+              <strong className="dark:text-white pl-2 text-dark">
+                قيمة التخفيض
+              </strong>
               <strong className="text-discount-value">
                 دج{data.discount_value}
               </strong>
-              <strong className="dark:text-white text-dark">
-                قيمة التخفيض
-              </strong>
             </div>
+            <Badge text={data.discount_text} />
           </div>
         )}
       </div>

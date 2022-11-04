@@ -22,7 +22,7 @@
 }
 
 .btn {
-  @apply flex h-12 items-center justify-center font-semibold text-btn-light bg-btn-dark dark:text-btn-dark dark:bg-btn-light w-full rounded-md relative text-xl;
+  @apply px-4 flex h-12 items-center justify-center font-semibold text-white bg-btn-dark dark:text-btn-dark dark:bg-btn-light w-full rounded-md relative text-xl;
 }
 
 .layout {
