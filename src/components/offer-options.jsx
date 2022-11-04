@@ -21,6 +21,8 @@ export default function OfferOptions() {
         price: "2320 دج للواحدة",
         discount: "(تخفيض 20%)",
         badge: "العرض الأكثر طلبا",
+        badge_color: "#fbd38d",
+        badge_bg: "#fbd38d4d",
       },
       {
         id: "3",
@@ -39,7 +41,7 @@ export default function OfferOptions() {
 
   return (
     <section className="w-full">
-      <div className="max-w-[250px] mx-auto text-center mb-2">
+      <div className="max-w-[250px] mx-auto text-center mb-6">
         <p className="text-light">{data.offer_text}</p>
       </div>
       <div className="flex flex-col space-y-3 dark:bg-footer bg-white rounded-xl p-3">
@@ -57,7 +59,7 @@ export default function OfferOptions() {
         {data?.discount && (
           <div className="w-full flex items-center justify-between">
             <Badge text={data.discount_text} />
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 text-sm">
               <strong className="text-discount-value">
                 دج{data.discount_value}
               </strong>

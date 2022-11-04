@@ -22,7 +22,7 @@ export default function OfferOption({
       />
       <div className="flex flex-col items-end space-y-2 text">
         <span>{count}</span>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 text-sm">
           <strong className="text-discount-percent">{discount}</strong>
           <p>{price}</p>
         </div>

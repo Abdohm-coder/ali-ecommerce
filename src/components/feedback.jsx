@@ -38,9 +38,7 @@ const data = [
 export default function Feedback() {
   return (
     <section className="flex flex-col w-full py-3">
-      <h2 className="text-2xl text text-right mb-8">
-        ماذا قال زبائننا عن منتجاتنا؟
-      </h2>
+      <h2 className=" mb-8">ماذا قال زبائننا عن منتجاتنا؟</h2>
       <div className="grid grid-cols-1 gap-8">
         {data.map(({ id, name, feedback, avatar }, index) => (
           <>

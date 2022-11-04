@@ -23,6 +23,7 @@ export default function SelectInput({
               label={label}
               placeholder={placeholder}
               searchable
+              clearable
               nothingFound="No options"
               data={data}
               {...rest}
