@@ -8,7 +8,7 @@ const setLocalStorage = (key, value) => localStorage.setItem(key, value);
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(getLocalStorage("theme") || "dark");
   useEffect(() => {
-    if (theme === "dark") {
+    if (theme === "dark") { 
       document.documentElement.classList.remove("light");
       document.documentElement.classList.add("dark");
     } else {
@@ -25,7 +25,7 @@ export const ThemeProvider = ({ children }) => {
 export const useThemeContext = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error("useSettings must be used within a ThemeProvider");
+    throw new Error("useThemeContext must be used within a ThemeProvider");
   }
   return context;
 };

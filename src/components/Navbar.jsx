@@ -1,7 +1,7 @@
 import { ROUTES } from "../utils/routes";
 import { MoonIcon, SunIcon } from "../icons/index";
 import { useThemeContext } from "../utils/theme.context";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function Navbar() {
   const { theme, setTheme } = useThemeContext();
@@ -16,15 +16,6 @@ export default function Navbar() {
       <nav className="flex items-center overflow-hidden h-20">
         <section className="layout">
           <div className="flex items-center justify-between w-full h-10 px-1">
-            <a href={ROUTES.HOME}>
-              <span className="overflow-hidden relative max-h-10">
-                <img
-                  className="object-contain w-36 max-w-full"
-                  alt=""
-                  src={logo}
-                />
-              </span>
-            </a>
             <button
               onClick={() =>
                 setTheme((theme) => (theme === "dark" ? "light" : "dark"))
@@ -32,6 +23,15 @@ export default function Navbar() {
               className="dark:text-white focus:ring-4 ring-btn-dark bg-white/10 hover:bg-white/30 p-1 h-10 w-10 flex items-center justify-center rounded-xl cursor-pointer">
               <Icon className="w-5 h-5 " />
             </button>
+            <Link to={ROUTES.HOME}>
+              <span className="overflow-hidden relative max-h-10">
+                <img
+                  className="object-contain w-36 max-w-full"
+                  alt=""
+                  src={logo}
+                />
+              </span>
+            </Link>
           </div>
         </section>
       </nav>
