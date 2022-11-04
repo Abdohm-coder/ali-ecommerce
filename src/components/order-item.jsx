@@ -5,6 +5,7 @@ export default function OrderItem({
   product_discount_price,
   total_price,
   type,
+  price
 }) {
   return (
     <>
@@ -23,17 +24,16 @@ export default function OrderItem({
           } ${total_price ? "font-black text-3xl" : ""}`}>
           {product_discount_price ? (
             <span className="!text-discount-percent line-through">
-              {" "}
-              {text}{" "}
+              {text} {price ? "دج" : ""}
             </span>
           ) : type === "percentage" ? (
             `${text}%`
           ) : type === "fixed" ? (
             `${text} دج`
           ) : (
-            text
+            `${text} ${price ? "دج" : ""}`
           )}
-          {product_discount_price}
+          {product_discount_price ? `${product_discount_price} ${price ? "دج" : ""}` : ""}
         </strong>
       </div>
       <hr className="opacity-30" />

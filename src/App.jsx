@@ -6,13 +6,14 @@ import CustomerInfo from "./pages/CustomerInfo";
 import Success from "./pages/Success";
 import Home from "./pages/Home";
 import { ThemeProvider } from "./utils/theme.context";
-import { OrderProvider } from "./utils/order.context";
+import { DataProvider } from "./utils/data.context";
 import Dashboard from "./pages/dashboard";
+import Error from "./pages/error";
 
 function App() {
   return (
     <ThemeProvider>
-      <OrderProvider>
+      <DataProvider>
         <Router>
           <Routes>
             <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
@@ -23,10 +24,11 @@ function App() {
                 element={<CustomerInfo />}></Route>
               <Route path={ROUTES.ORDER_INFO} element={<OrderInfo />}></Route>
               <Route path={ROUTES.SUCCESS} element={<Success />}></Route>
+              <Route path="*" element={<Error />}></Route>
             </Route>
           </Routes>
         </Router>
-      </OrderProvider>
+      </DataProvider>
     </ThemeProvider>
   );
 }
