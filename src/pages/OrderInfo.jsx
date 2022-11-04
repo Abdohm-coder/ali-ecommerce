@@ -1,23 +1,37 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/order-item";
+import { useOrderContext } from "../utils/order.context";
 import { ROUTES } from "../utils/routes";
+import Error from "./error";
 const data = {
   product_name: "وسادة نابوفا",
-  offer_type: "وسادتين (2) بتخفيض 20%",
   client_name: "sdsds",
   client_phone: "0549848545",
   client_state: "Alger - الجزائر العاصمة",
   client_city: "Baraki - براقي",
   shipping: "400 دج",
-  quantity: "2",
+  quantity: 2,
   product_price: " 2900 دج",
   discount: true,
-  product_discount: "2320 دج",
+  discount_value: 20,
+  discount_type: "percentage",
+  product_discount_price: "2320 دج",
   price_before: "6200 دج",
   price_total: "5040 دج",
 };
 function OrderInfo() {
-  return (
+  const { orderData, setOrderData } = useOrderContext();
+  let navigate = useNavigate();
+  const handleSubmitOrder = () => {
+    setOrderData((state) => ({
+      ...state,
+      permission: ROUTES.SUCCESS,
+    }));
+    navigate(ROUTES.SUCCESS);
+  };
+  return orderData?.permission !== ROUTES.ORDER_INFO ? (
+    <Error />
+  ) : (
     <section className="pt-8 layout">
       <h1 className="text text-4xl font-black mb-2">تأكدوا من طلبكم</h1>
       <p className="text mb-4">
@@ -34,10 +48,16 @@ function OrderInfo() {
       <OrderItem
         label="سعر الواحدة"
         text={data.product_price}
-        product_discount={data.product_discount}
+        product_discount_price={data.product_discount_price}
       />
       <OrderItem label="الكمية" text={data.quantity} />
-      <OrderItem label="نوع العرض" text={data.offer_type} />
+      {data.discount_value && (
+        <OrderItem
+          label="قيمة التخفيض"
+          text={data.discount_value}
+          type={data.discount_type}
+        />
+      )}{" "}
       <OrderItem label="اسم الزبون" text={data.client_name} />
       <OrderItem label="رقم الهاتف" text={data.client_phone} />
       <OrderItem label="ولاية التوصيل" text={data.client_state} />
@@ -51,9 +71,9 @@ function OrderInfo() {
         />
       )}
       <OrderItem label="الإجمالي الكلي" total_price text={data.price_total} />
-      <Link to={ROUTES.SUCCESS}>
-        <button className="btn">تأكيد الطلبية</button>
-      </Link>
+      <button onClick={handleSubmitOrder} className="btn">
+        تأكيد الطلبية
+      </button>
       <p className="text-light text-sm text-center max-w-[250px] mx-auto mt-2">
         بضغطك على زر الطلب فأنت توافق على قوانين الاستخدام و بوليصة التأمين
       </p>

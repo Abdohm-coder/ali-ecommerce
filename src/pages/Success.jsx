@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import successImg from "../assets/success.svg";
+import { useOrderContext } from "../utils/order.context";
 import { ROUTES } from "../utils/routes";
+import Error from "./error";
 
 function Success() {
-  return (
+  const { orderData } = useOrderContext();
+
+  return orderData?.permission !== ROUTES.SUCCESS ? (
+    <Error />
+  ) : (
     <section className="max-w-screen-sm mx-auto pt-10">
       <div className="flex flex-col items-center justify-center">
         <img

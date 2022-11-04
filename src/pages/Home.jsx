@@ -12,7 +12,7 @@ const images = [
 
 const data = {
   reviews_number: 242,
-  reviews_average: 2,
+  reviews_average: 4.6,
 };
 
 function Home() {

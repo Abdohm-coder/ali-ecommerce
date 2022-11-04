@@ -7,11 +7,12 @@ import { ROUTES } from "../utils/routes";
 import SelectInput from "../components/select-input";
 import { data } from "../data/code";
 import { useEffect, useMemo, useState } from "react";
-
 import shippingImg from "../assets/shipping.svg";
 import paymentImg from "../assets/payment_arrive.svg";
 import qualityImg from "../assets/quality.svg";
 import transferImg from "../assets/transfer-money.svg";
+import { useOrderContext } from "../utils/order.context";
+import Error from "./error";
 
 const featured_icons = [
   { icon: paymentImg, text: "الدفع عند الاستلام" },
@@ -42,10 +43,16 @@ function CustomerInfo() {
     resolver: yupResolver(orderFormShema),
   });
 
+  const { orderData, setOrderData } = useOrderContext();
   let navigate = useNavigate();
 
   const onSubmit = async (values) => {
     if (values) {
+      setOrderData((state) => ({
+        ...state,
+        client_details: values,
+        permission: ROUTES.ORDER_INFO,
+      }));
       navigate(ROUTES.ORDER_INFO);
     }
   };
@@ -76,7 +83,9 @@ function CustomerInfo() {
     setCities(filter_cities);
   }, [wilayaSelected]);
 
-  return (
+  return orderData?.permission !== ROUTES.CUSTOMER_INFO ? (
+    <Error />
+  ) : (
     <section className="pt-8 layout">
       <div className="mx-auto max-w-[250px] text-center">
         <h1 className="text text-xl font-black mb-2">الآن أدخل معلوماتك</h1>

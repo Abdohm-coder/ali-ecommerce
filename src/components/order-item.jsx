@@ -2,8 +2,9 @@ export default function OrderItem({
   label,
   text,
   discount = false,
-  product_discount,
+  product_discount_price,
   total_price,
+  type,
 }) {
   return (
     <>
@@ -20,15 +21,19 @@ export default function OrderItem({
           className={`text text-left ${
             discount ? "!text-discount-percent" : ""
           } ${total_price ? "font-black text-3xl" : ""}`}>
-          {product_discount ? (
+          {product_discount_price ? (
             <span className="!text-discount-percent line-through">
               {" "}
               {text}{" "}
             </span>
+          ) : type === "percentage" ? (
+            `${text}%`
+          ) : type === "fixed" ? (
+            `${text} دج`
           ) : (
-            <>{text}</>
+            text
           )}
-          {product_discount}
+          {product_discount_price}
         </strong>
       </div>
       <hr className="opacity-30" />
