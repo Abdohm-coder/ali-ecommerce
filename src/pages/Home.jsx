@@ -17,42 +17,46 @@ const data = {
 
 function Home() {
   return (
-    <section className="flex flex-col space-y-8">
-      <HeroCarousel images={images} withIndicators={true} />
-      <div className="flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-black dark:text-white mb-2 text-dark">
-          وسادة نابوفا الطبية
-        </h1>
-        <div className="flex flex-col items-center">
-          <div className="flex items-center space-x-1">
-            {Array(5)
-              .fill("")
-              .map((_, index) => {
-                let filled_stars = data.reviews_average - index;
-                return (
-                  <>
-                    {filled_stars >= 1 ? (
-                      <FaStar key={filled_stars} size={24} fill={"#805ad5"} />
-                    ) : (
-                      filled_stars > 0 && (
-                        <FaStarHalfAlt
-                          key={filled_stars}
-                          size={24}
-                          fill="#805ad5"
-                        />
-                      )
-                    )}
-                  </>
-                );
-              })}
+    <section className="layout">
+      <div className="flex flex-col space-y-8">
+        <HeroCarousel images={images} withIndicators={true} />
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-4xl font-black dark:text-white mb-2 text-dark">
+            وسادة نابوفا الطبية
+          </h1>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center space-x-1">
+              {Array(5)
+                .fill("")
+                .map((_, index) => {
+                  let filled_stars = data.reviews_average - index;
+                  return (
+                    <>
+                      {filled_stars >= 1 ? (
+                        <FaStar key={filled_stars} size={24} fill={"#805ad5"} />
+                      ) : (
+                        filled_stars > 0 && (
+                          <FaStarHalfAlt
+                            key={filled_stars}
+                            size={24}
+                            fill="#805ad5"
+                          />
+                        )
+                      )}
+                    </>
+                  );
+                })}
+            </div>
+            <strong className="text-center mt-2 text-light ">{`${data.reviews_average.toFixed(
+              1
+            )} (${data.reviews_number})`}</strong>
           </div>
-          <strong className="text-center mt-2 text-light ">{`(${data.reviews_number}) ${data.reviews_average.toFixed(1)}`}</strong>
         </div>
+        <OfferOptions />
+        <ReadMore />
+        <Feautres />
+        <Feedback />
       </div>
-      <OfferOptions />
-      <ReadMore />
-      <Feautres />
-      <Feedback />
     </section>
   );
 }

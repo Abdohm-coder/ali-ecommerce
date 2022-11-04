@@ -20,11 +20,11 @@ function Feautres() {
       <Paper
         shadow="xs"
         radius={6}
-        className="flex items-center h-16 overflow-hidden bg-footer">
-        <div className="text-btn h-full w-16 grid place-items-center bg-btn-dark">
+        className="flex items-center h-16 overflow-hidden dark:bg-footer">
+        <div className="text-btn h-full w-16 grid place-items-center dark:bg-btn-dark bg-btn-light">
           <TbAward size={32} className="align-middle text-footer" />
         </div>
-        <p className="flex-1 text-center ">{feature}</p>
+        <strong className="flex-1 text-center text-light">{feature}</strong>
       </Paper>
     );
   });

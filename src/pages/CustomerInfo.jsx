@@ -77,7 +77,7 @@ function CustomerInfo() {
   }, [wilayaSelected]);
 
   return (
-    <section className="pt-8">
+    <section className="pt-8 layout">
       <div className="mx-auto max-w-[250px] text-center">
         <h1 className="text text-xl font-black mb-2">الآن أدخل معلوماتك</h1>
         <p className="text-light font-semibold mb-6">

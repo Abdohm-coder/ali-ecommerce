@@ -13,22 +13,20 @@ import Dashboard from "./pages/dashboard";
 function App() {
   return (
     <ThemeProvider>
-      <Navbar />
-      <main className="h-full min-h-screen pb-10">
-        <section className="layout">
-          <Router>
-            <Routes>
-              <Route element={<Home />}></Route>
-              <Route path={ROUTES.DASHBOARD} element={<Dashboard />}></Route>
-              <Route
-                path={ROUTES.CUSTOMER_INFO}
-                element={<CustomerInfo />}></Route>
-              <Route path={ROUTES.ORDER_INFO} element={<OrderInfo />}></Route>
-              <Route path={ROUTES.SUCCESS} element={<Success />}></Route>
-            </Routes>
-          </Router>
-        </section>
-      </main>
+      <Router>
+        <Routes>
+          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+          <Route path={ROUTES.HOME} element={<Navbar />}>
+            <Route index element={<Home />}></Route>
+            <Route
+              path={ROUTES.CUSTOMER_INFO}
+              element={<CustomerInfo />}></Route>
+            <Route path={ROUTES.ORDER_INFO} element={<OrderInfo />}></Route>
+            <Route path={ROUTES.SUCCESS} element={<Success />}></Route>
+          </Route>
+        </Routes>
+      </Router>
+
       <Footer />
     </ThemeProvider>
   );
