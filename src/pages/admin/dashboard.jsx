@@ -12,7 +12,7 @@ function Dashboard() {
   }, []);
   return (
     <MantineProvider>
-      <main className="w-screen h-screen bg-white flex">
+      <main className="dashboard w-screen h-screen bg-white flex">
         <DashSidebar />
         <DashWrapper />
       </main>

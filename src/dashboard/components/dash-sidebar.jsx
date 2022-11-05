@@ -1,5 +1,7 @@
 import { ActionIcon, Paper } from "@mantine/core";
 import { TbDashboard, TbFileDescription, TbLogout } from "react-icons/tb";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../utils/routes";
 
 function DashSidebar() {
   return (
@@ -12,12 +14,16 @@ function DashSidebar() {
           />
         </div>
         <div className="flex flex-1 w-full flex-col items-center justify-center gap-4 mb-40">
-          <ActionIcon size="xl" className="hover:bg-white/20">
-            <TbDashboard color="white" size={32} />
-          </ActionIcon>
-          <ActionIcon size="xl" className="hover:bg-white/20">
-            <TbFileDescription color="white" size={32} />
-          </ActionIcon>
+          <Link to={ROUTES.DASHBOARD}>
+            <ActionIcon size="xl" className="hover:bg-white/20">
+              <TbDashboard color="white" size={32} />
+            </ActionIcon>
+          </Link>
+          <Link to={ROUTES.PAGE_INFO}>
+            <ActionIcon size="xl" className="hover:bg-white/20">
+              <TbFileDescription color="white" size={32} />
+            </ActionIcon>
+          </Link>
         </div>
         <div className="grid items-center w-full h-8 justify-center">
           <ActionIcon size="lg" className="hover:bg-white/20">

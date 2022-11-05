@@ -1,19 +1,22 @@
-import React from "react";
+import { Paper } from "@mantine/core";
 
 function Widgets() {
   return (
-    <section className="flex gap-4 w-full">
-      <Widget />
-      <Widget />
+    <section className="flex flex-col md:flex-row gap-4 w-full my-8">
+      <Widget title={"عدد الزيارات"} data={89} />
+      <Widget title={"عدد الطلبات"} data={89} />
     </section>
   );
 }
 
-function Widget() {
+function Widget({ title, data }) {
   return (
-    <div className="flex-1 h-20 border-dark border-1">
-      <h3 className="text-dark">first widget</h3>
-    </div>
+    <Paper shadow="xs" radius={6} className="flex flex-col flex-1 h-32 p-2  ">
+      <h3 className="text-dark">{title}</h3>
+      <div className="grid place-items-center h-full flex-1 ">
+        <p className="text-4xl">{data}</p>
+      </div>
+    </Paper>
   );
 }
 

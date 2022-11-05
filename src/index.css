@@ -94,5 +94,11 @@ p {
 }
 
 .icon svg {
-  @apply w-8 h-8 mb-3
+  @apply w-8 h-8 mb-3;
+}
+
+/* -------------------------------- Dashbaord ------------------------------- */
+
+.dashboard .orders-table thead tr th {
+  text-align: right !important;
 }
