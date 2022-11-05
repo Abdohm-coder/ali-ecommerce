@@ -102,3 +102,7 @@ p {
 .dashboard .orders-table thead tr th {
   text-align: right !important;
 }
+
+.mantine-Image-image {
+  @apply max-w-[64px] sm:max-w-[128px] object-contain
+}
