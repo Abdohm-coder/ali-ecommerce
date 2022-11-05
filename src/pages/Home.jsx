@@ -5,6 +5,7 @@ import { FaStarHalfAlt, FaStar } from "react-icons/fa";
 import ReadMore from "../components/read-more";
 import Feedback from "../components/feedback";
 import { useDataContext } from "../utils/data.context";
+import Records from "../components/records";
 
 function Home() {
   const { assets } = useDataContext();
@@ -50,6 +51,7 @@ function Home() {
         <OfferOptions />
         <ReadMore />
         <Feautres />
+        <Records />
         <Feedback />
       </div>
     </section>

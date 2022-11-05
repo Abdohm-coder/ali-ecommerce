@@ -8,7 +8,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Vazirmatn", sans-serif !important;
-  direction: rtl !important;
+  direction: rtl;
 }
 
 #root {
@@ -51,6 +51,10 @@ p {
 
 /* ----------------------------- Carousel style ----------------------------- */
 
+.mantine-Carousel-container {
+  direction: ltr !important;
+}
+
 .mantine-Carousel-indicator {
   @apply bg-white;
 }
@@ -87,4 +91,8 @@ p {
 
 .mantine-Input-input {
   @apply !text-right !text-base !font-medium placeholder:!text-base placeholder:!font-black placeholder:!text-light;
+}
+
+.icon svg {
+  @apply w-8 h-8 mb-3
 }
