@@ -26,10 +26,10 @@ function OrdersTable() {
     )
   );
   return (
-    <Paper shadow="xs" className="overflow-x-auto">
+    <Paper shadow="xs" className="overflow-x-auto border-[1px] border-light">
       <Table
         horizontalSpacing="md"
-        verticalSpacing="sm"
+        verticalSpacing="md"
         highlightOnHover
         className="w-full min-w-max orders-table">
         <thead>

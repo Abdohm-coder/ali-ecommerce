@@ -1,6 +1,6 @@
 import Widgets from "./widgets";
 import OrdersTable from "./ordersTable";
-import { Button, Group } from "@mantine/core";
+import { Button, Divider, Group } from "@mantine/core";
 import { useState } from "react";
 import { Modal } from "@mantine/core";
 import ProductForm from "./product-form";
@@ -8,7 +8,7 @@ import ProductForm from "./product-form";
 function Main() {
   const [opened, setOpened] = useState(false);
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       <Group position="apart">
         <h1 className="text-3xl">أهلا بك في لوحة التحكم</h1>
         <Button
@@ -19,6 +19,7 @@ function Main() {
           Edit Product
         </Button>
       </Group>
+      <Divider variant="solid" />
       <Widgets />
       <OrdersTable />
       <Modal

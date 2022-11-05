@@ -26,7 +26,8 @@ function ProductForm({ setOpened }) {
           radius={6}
           label="الكمية"
           placeholder="أكتب الكمية في هذا التخفيض"
-          min={0}
+          step={1}
+          min={1}
           mb="sm"
           className="w-full"
         />
