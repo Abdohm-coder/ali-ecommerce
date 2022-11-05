@@ -5,4 +5,5 @@ export const ROUTES = {
   SUCCESS: "/success",
   DASHBOARD: "/admin-dashboard",
   PRIVACY: "/privacy",
+  PAGE_INFO: "/admin-dashboard/page-info"
 };

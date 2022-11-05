@@ -1,5 +1,5 @@
 import { MantineProvider } from "@mantine/core";
-import DashNavbar from "../../dashboard/components/dashNavbar";
+import DashSidebar from "../../dashboard/components/dash-sidebar";
 import DashWrapper from "../../dashboard/dashWrapper";
 import PageInfo from "./page-info";
 import { useThemeContext } from "../../utils/theme.context";
@@ -10,12 +10,11 @@ function Dashboard() {
   useEffect(() => {
     setTheme("light");
   }, []);
-  return <PageInfo />;
   return (
     <MantineProvider>
       <main className="w-screen h-screen bg-white flex">
+        <DashSidebar />
         <DashWrapper />
-        <DashNavbar />
       </main>
     </MantineProvider>
   );

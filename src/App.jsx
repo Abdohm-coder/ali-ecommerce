@@ -9,6 +9,8 @@ import { ThemeProvider } from "./utils/theme.context";
 import { DataProvider } from "./utils/data.context";
 import Dashboard from "./pages/admin/dashboard";
 import Error from "./pages/error";
+import PageInfo from "./pages/admin/page-info";
+import Main from "./dashboard/components/Main";
 
 function App() {
   return (
@@ -16,7 +18,10 @@ function App() {
       <DataProvider>
         <Router>
           <Routes>
-            <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+            <Route path={ROUTES.DASHBOARD} element={<Dashboard />}>
+              <Route index element={<Main />}></Route>
+              <Route element={<PageInfo />} path={ROUTES.PAGE_INFO}></Route>
+            </Route>
             <Route path={ROUTES.HOME} element={<Navbar />}>
               <Route index element={<Home />}></Route>
               <Route
