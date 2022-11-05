@@ -1,7 +1,16 @@
-import React from "react";
+import { MantineProvider } from "@mantine/core";
+import DashNavbar from "../dashboard/components/dashNavbar";
+import DashWrapper from "../dashboard/dashWrapper";
 
 function Dashboard() {
-  return <h1 className="text-white mt-10">أهلا بك في لوحة التحكم</h1>;
+  return (
+    <MantineProvider>
+      <main className="w-screen h-screen bg-white flex">
+        <DashWrapper />
+        <DashNavbar />
+      </main>
+    </MantineProvider>
+  );
 }
 
 export default Dashboard;
