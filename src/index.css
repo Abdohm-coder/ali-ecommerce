@@ -104,5 +104,19 @@ p {
 }
 
 .mantine-Image-image {
-  @apply  sm:max-w-[128px] object-contain
+  @apply sm:max-w-[128px] object-contain;
+}
+
+/* --------------------------- Manitne From Style --------------------------- */
+
+.mantine-Radio-body {
+  gap: 5px;
+}
+
+.mantine-Checkbox-body {
+  gap: 8px;
+}
+
+.mantine-Group-root {
+  gap: 5px;
 }
