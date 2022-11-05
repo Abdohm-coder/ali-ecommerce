@@ -22,7 +22,9 @@ export default function OfferOptions() {
   return (
     <section className="w-full">
       <div className="max-w-[250px] mx-auto text-center mb-6">
-        <p className="text-light">{pageInfo?.homepage?.offer_script}</p>
+        <p className="text-light">
+          اختر أحد عروض البيع المتوفرة و اضغط على زر المواصلة
+        </p>
       </div>
       <div className="flex flex-col space-y-3 dark:bg-footer bg-white rounded-xl p-3">
         {offer_options.map((option, index) => (

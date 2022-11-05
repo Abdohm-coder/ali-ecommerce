@@ -104,5 +104,5 @@ p {
 }
 
 .mantine-Image-image {
-  @apply max-w-[64px] sm:max-w-[128px] object-contain
+  @apply  sm:max-w-[128px] object-contain
 }

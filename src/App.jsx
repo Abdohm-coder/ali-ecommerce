@@ -10,7 +10,7 @@ import { DataProvider } from "./utils/data.context";
 import Dashboard from "./pages/admin/dashboard";
 import Error from "./pages/error";
 import PageInfo from "./pages/admin/page-info";
-import Main from "./dashboard/components/Main";
+import Main from "./dashboard/components/dashHome";
 
 function App() {
   return (

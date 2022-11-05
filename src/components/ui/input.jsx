@@ -2,7 +2,7 @@ import React from "react";
 const Input = React.forwardRef(
   ({ label, name, error, note, required, type = "text", ...rest }, ref) => {
     return (
-      <div className="flex flex-col text-right space-y-2">
+      <div className="flex flex-col text-right space-y-2 w-full">
         <label className="text font-black" htmlFor={name}>
           {label}
           {required && <span className="text-discount-percent"> * </span>}
@@ -13,7 +13,7 @@ const Input = React.forwardRef(
           name={name}
           id={name}
           type={type}
-          className="appearance-none text-right text outline-transparent outline-2 rounded-md focus:border-2 border-btn-dark dark:border-btn-light dark:bg-white/5 bg-transparent px-4 h-10"
+          className="appearance-none text-right text outline-transparent outline-2 rounded-md focus:border-2 border-btn-dark dark:border-btn-light bg-gray-50 dark:bg-white/5  px-4 h-10"
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"

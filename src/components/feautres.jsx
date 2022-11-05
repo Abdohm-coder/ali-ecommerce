@@ -5,13 +5,8 @@ import { useDataContext } from "../utils/data.context";
 
 function Feautres() {
   const { pageInfo } = useDataContext();
-  const { title, description, items_non_image, items_with_image } =
+  const { title, description, items_non_image, items_with_image, images } =
     pageInfo?.homepage?.features;
-  const images = [
-    "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-    ,
-    "https://images.unsplash.com/photo-1548484352-dc0b3cc1bca4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
-  ];
 
   const miniFeatures = items_non_image.map(({ id, title }) => {
     return (

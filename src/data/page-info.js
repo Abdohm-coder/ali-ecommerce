@@ -12,7 +12,6 @@ export const data = {
         "https://images.unsplash.com/photo-1617294864705-eaf3c911259f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
       ],
       title: "وسادة نابوفا الطبية",
-      offer_script: "اختر أحد عروض البيع المتوفرة و اضغط على زر المواصلة",
     },
     product: {
       product_name: "وسادة نابوفا",
@@ -65,6 +64,11 @@ export const data = {
       title: "ما الذي يجعل وسادة نابوفا مميزة جدا؟",
       description:
         "تتميز مادة المايكروفايبر بأنها ناعمة وداعمة في نفس الوقت، إذن فهي تحتضن الرأس والرقبة بلطف مع دعم عدم الضغط، ستنام بشكل مريح بغض النظر وعن وضعية نومك المفضلة.",
+      images: [
+        "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+        ,
+        "https://images.unsplash.com/photo-1548484352-dc0b3cc1bca4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
+      ],
       items_non_image: [
         {
           id: "",
