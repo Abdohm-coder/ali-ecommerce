@@ -11,8 +11,8 @@ function Widgets() {
 
 function Widget() {
   return (
-    <div className="flex-1 h-20">
-      <h2 className="text-red-900">first widget</h2>
+    <div className="flex-1 h-20 border-dark border-1">
+      <h3 className="text-dark">first widget</h3>
     </div>
   );
 }
