@@ -7,6 +7,7 @@ export default function SelectInput({
   label,
   placeholder,
   data,
+  searchable = true,
   error,
   ...rest
 }) {
@@ -22,7 +23,7 @@ export default function SelectInput({
               required
               label={label}
               placeholder={placeholder}
-              searchable
+              searchable={searchable}
               clearable
               nothingFound="No options"
               data={data}
