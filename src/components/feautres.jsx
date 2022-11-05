@@ -4,9 +4,9 @@ import { Paper } from "@mantine/core";
 import { useDataContext } from "../utils/data.context";
 
 function Feautres() {
-  const { assets } = useDataContext();
+  const { pageInfo } = useDataContext();
   const { title, description, items_non_image, items_with_image } =
-    assets?.homepage?.features;
+    pageInfo?.homepage?.features;
   const images = [
     "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
     ,
@@ -43,17 +43,21 @@ function Feautres() {
       </div>
       <div className="flex flex-col gap-2 w-full my-4">{miniFeatures}</div>
       <div className="flex flex-col my-8">
-        {
-          items_with_image.map(({ id, title, image, description }) => (
-            <div className="flex flex-col items-center justify-center text-center mb-8" key={id}>
-              <img src={image} alt={title} className="max-w-xs w-full h-auto object-cover mb-6 rounded-xl"  />
-              <div className="max-w-[260px] mx-auto">
-                <strong className="text-btn-dark">{title}</strong>
-                <p className="text-light">{description}</p>
-              </div>
+        {items_with_image.map(({ id, title, image, description }) => (
+          <div
+            className="flex flex-col items-center justify-center text-center mb-8"
+            key={id}>
+            <img
+              src={image}
+              alt={title}
+              className="max-w-xs w-full h-auto object-cover mb-6 rounded-xl"
+            />
+            <div className="max-w-[260px] mx-auto">
+              <strong className="text-btn-dark">{title}</strong>
+              <p className="text-light">{description}</p>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
       <hr className="opacity-20" />
     </section>

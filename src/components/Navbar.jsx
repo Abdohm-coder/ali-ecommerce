@@ -4,13 +4,19 @@ import { Link, Outlet } from "react-router-dom";
 import Footer from "./footer";
 import { ROUTES } from "../utils/routes";
 import { useDataContext } from "../utils/data.context";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const { assets } = useDataContext();
+  const { pageInfo } = useDataContext();
   const { theme, setTheme } = useThemeContext();
+
+  useEffect(() => {
+    // Count Visits
+  }, []);
+
   const Icon = theme === "dark" ? SunIcon : MoonIcon;
   const logo =
-    theme === "dark" ? assets.logo.dark_mode : assets.logo.light_mode;
+    theme === "dark" ? pageInfo.logo.dark_mode : pageInfo.logo.light_mode;
   return (
     <>
       <main className="h-full min-h-screen pb-10">

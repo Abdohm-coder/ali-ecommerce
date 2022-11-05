@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import OrderItem from "../components/order-item";
+import OrderItem from "../components/ui/order-item";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";

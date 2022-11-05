@@ -1,13 +1,14 @@
 import { createContext, useContext, useState } from "react";
-import { data } from "../data/assets";
+import { data } from "../data/page-info.js";
 
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-  const [order, setOrder] = useState();
-  const [assets, setAssets] = useState(data);
+  const [order, setOrder] = useState({}); // POST API
+  const [pageInfo, setPageInfo] = useState(data); // GET API
+
   return (
-    <DataContext.Provider value={{ order, setOrder, assets }}>
+    <DataContext.Provider value={{ order, setOrder, pageInfo }}>
       {children}
     </DataContext.Provider>
   );

@@ -1,4 +1,4 @@
-import Badge from "../utils/badge";
+import Badge from "./badge";
 
 export default function OfferOption({
   index,

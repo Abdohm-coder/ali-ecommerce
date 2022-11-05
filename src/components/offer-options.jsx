@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Badge from "../utils/badge";
+import Badge from "./ui/badge";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
-import OfferOption from "./offer-option";
+import OfferOption from "./ui/offer-option";
 
 export default function OfferOptions() {
-  const { order, setOrder, assets } = useDataContext();
-  const { offer_options, product_name } = assets?.homepage?.product;
+  const { order, setOrder, pageInfo } = useDataContext();
+  const { offer_options, product_name } = pageInfo?.homepage?.product;
 
   const [activeOffer, setOffer] = useState(1);
 
@@ -22,7 +22,7 @@ export default function OfferOptions() {
   return (
     <section className="w-full">
       <div className="max-w-[250px] mx-auto text-center mb-6">
-        <p className="text-light">{assets?.homepage?.offer_script}</p>
+        <p className="text-light">{pageInfo?.homepage?.offer_script}</p>
       </div>
       <div className="flex flex-col space-y-3 dark:bg-footer bg-white rounded-xl p-3">
         {offer_options.map((option, index) => (

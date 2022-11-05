@@ -8,9 +8,9 @@ import { useDataContext } from "../utils/data.context";
 import Records from "../components/records";
 
 function Home() {
-  const { assets } = useDataContext();
-  const { images, title } = assets?.homepage?.hero;
-  const { reviews_average, reviews_number } = assets?.homepage?.feedbacks;
+  const { pageInfo } = useDataContext();
+  const { images, title } = pageInfo?.homepage?.hero;
+  const { reviews_average, reviews_number } = pageInfo?.homepage?.feedbacks;
 
   return (
     <section className="layout">

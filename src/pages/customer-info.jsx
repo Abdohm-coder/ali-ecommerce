@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Input from "../components/Input";
+import Input from "../components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../utils/routes";
 import SelectInput from "../components/select-input";

@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/navbar";
 import { ROUTES } from "./utils/routes";
-import OrderInfo from "./pages/OrderInfo";
-import CustomerInfo from "./pages/CustomerInfo";
-import Success from "./pages/Success";
-import Home from "./pages/Home";
+import OrderInfo from "./pages/order-info";
+import CustomerInfo from "./pages/customer-info";
+import Success from "./pages/success";
+import Home from "./pages/home";
 import { ThemeProvider } from "./utils/theme.context";
 import { DataProvider } from "./utils/data.context";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/admin/dashboard";
 import Error from "./pages/error";
 
 function App() {
