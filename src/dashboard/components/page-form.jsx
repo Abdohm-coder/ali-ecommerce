@@ -8,6 +8,7 @@ import TextArea from "../../components/ui/textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 
 const pageschema = yup.object().shape({
   homepage: yup.object().shape({
@@ -206,7 +207,9 @@ export default function PageInfoForm({ initialData }) {
       },
       footer: filter_footer,
     };
+    
     console.log(input);
+    toast.success("مبروك، تم التعديل بنجاح")
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
