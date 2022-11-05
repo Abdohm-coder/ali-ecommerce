@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import successImg from "../assets/success.svg";
-import { useOrderContext } from "../utils/order.context";
+import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
 
 function Success() {
-  const { orderData } = useOrderContext();
-
-  return orderData?.permission !== ROUTES.SUCCESS ? (
+  const { order } = useDataContext();
+  console.log(order)
+  return order?.permission !== ROUTES.SUCCESS ? (
     <Error />
   ) : (
     <section className="max-w-screen-sm mx-auto pt-10">

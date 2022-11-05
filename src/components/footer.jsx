@@ -12,12 +12,6 @@ const data = [
     label: "العنوان",
     text: "المنطقة الصناعية بسطيف",
   },
-  {
-    id: "3",
-    label: "قوانين الاستخدام",
-    text: null,
-    link: ROUTES.PRIVACY,
-  },
 ];
 
 export default function Footer() {
@@ -38,14 +32,17 @@ export default function Footer() {
             />
           </a>
           <ul className="flex flex-col space-y-1 text-white">
-            {data.map(({ id, label, text, link }) => (
-              <a href={link || "#"}>
-                <li className="flex items-center">
-                  {label && <p className="text-light ml-2">{label}</p>}
-                  {text && <p className="text">{text}</p>}
-                </li>
-              </a>
+            {data.map(({ id, label, text }) => (
+              <li key={id} className="flex items-center">
+                {label && <p className="text-light ml-2">{label}</p>}
+                {text && <p className="text">{text}</p>}
+              </li>
             ))}
+            <a href={ROUTES.PRIVACY}>
+              <li className="flex items-center">
+                <p className="text-light ml-2">قوانين الاستخدام</p>
+              </li>
+            </a>
           </ul>
         </div>
       </section>

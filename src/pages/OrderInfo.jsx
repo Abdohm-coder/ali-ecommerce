@@ -1,35 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/order-item";
-import { useOrderContext } from "../utils/order.context";
+import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
-const data = {
-  product_name: "وسادة نابوفا",
-  client_name: "sdsds",
-  client_phone: "0549848545",
-  client_state: "Alger - الجزائر العاصمة",
-  client_city: "Baraki - براقي",
-  shipping: "400 دج",
-  quantity: 2,
-  product_price: " 2900 دج",
-  discount: true,
-  discount_value: 20,
-  discount_type: "percentage",
-  product_discount_price: "2320 دج",
-  price_before: "6200 دج",
-  price_total: "5040 دج",
-};
+
 function OrderInfo() {
-  const { orderData, setOrderData } = useOrderContext();
+  const { order, setOrder } = useDataContext();
+  const { product_name, client_details, order_details } = order;
   let navigate = useNavigate();
   const handleSubmitOrder = () => {
-    setOrderData((state) => ({
+    setOrder((state) => ({
       ...state,
       permission: ROUTES.SUCCESS,
     }));
     navigate(ROUTES.SUCCESS);
   };
-  return orderData?.permission !== ROUTES.ORDER_INFO ? (
+  return order?.permission !== ROUTES.ORDER_INFO ? (
     <Error />
   ) : (
     <section className="pt-8 layout">
@@ -44,33 +30,40 @@ function OrderInfo() {
           تكلفة الشحن.
         </strong>
       </span>
-      <OrderItem label="اسم المنتوج" text={data.product_name} />
+      <OrderItem label="اسم المنتوج" text={product_name} />
       <OrderItem
         label="سعر الواحدة"
-        text={data.product_price}
-        product_discount_price={data.product_discount_price}
+        text={order_details.product_price}
+        price
+        product_discount_price={order_details.product_discount_price}
       />
-      <OrderItem label="الكمية" text={data.quantity} />
-      {data.discount_value && (
+      <OrderItem label="الكمية" text={order_details.quantity} />
+      {order_details.discount_value && (
         <OrderItem
           label="قيمة التخفيض"
-          text={data.discount_value}
-          type={data.discount_type}
+          text={order_details.discount_value}
+          type={order_details.discount_type}
         />
       )}{" "}
-      <OrderItem label="اسم الزبون" text={data.client_name} />
-      <OrderItem label="رقم الهاتف" text={data.client_phone} />
-      <OrderItem label="ولاية التوصيل" text={data.client_state} />
-      <OrderItem label="بلدية التوصيل" text={data.client_city} />
-      <OrderItem label="تكاليف الشحن" text={data.shipping} />
-      {data.discount && (
+      <OrderItem label="اسم الزبون" text={client_details.client_name} />
+      <OrderItem label="رقم الهاتف" text={client_details.client_phone} />
+      <OrderItem label="ولاية التوصيل" text={client_details.client_state} />
+      <OrderItem label="بلدية التوصيل" text={client_details.client_city} />
+      <OrderItem label="تكاليف الشحن" text={order_details.shipping} price />
+      {order_details.discount && (
         <OrderItem
           discount
           label="الاجمالي قبل التخفيضات"
-          text={data.price_before}
+          price
+          text={order_details.price_before}
         />
       )}
-      <OrderItem label="الإجمالي الكلي" total_price text={data.price_total} />
+      <OrderItem
+        label="الإجمالي الكلي"
+        price
+        total_price
+        text={order_details.price_total}
+      />
       <button onClick={handleSubmitOrder} className="btn">
         تأكيد الطلبية
       </button>

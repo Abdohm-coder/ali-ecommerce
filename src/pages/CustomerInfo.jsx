@@ -11,7 +11,7 @@ import shippingImg from "../assets/shipping.svg";
 import paymentImg from "../assets/payment_arrive.svg";
 import qualityImg from "../assets/quality.svg";
 import transferImg from "../assets/transfer-money.svg";
-import { useOrderContext } from "../utils/order.context";
+import { useDataContext } from "../utils/data.context";
 import Error from "./error";
 
 const featured_icons = [
@@ -22,15 +22,15 @@ const featured_icons = [
 ];
 
 const orderFormShema = yup.object().shape({
-  name: yup.string().required("يجب إدخال هذا الحقل"),
-  phone: yup
+  client_name: yup.string().required("يجب إدخال هذا الحقل"),
+  client_phone: yup
     .string()
     .required("يجب إدخال هذا الحقل")
     .matches(/^[0-9]+$/, "رجاء أدخل رقم هاتف صحيح لتصلك رسالة تأكيد الطلبية")
     .min(10, "رجاء أدخل رقم هاتف صحيح لتصلك رسالة تأكيد الطلبية")
     .max(10, "رجاء أدخل رقم هاتف صحيح لتصلك رسالة تأكيد الطلبية"),
-  state: yup.string().required("يجب إدخال هذا الحقل"),
-  city: yup.string().required("يجب إدخال هذا الحقل"),
+  client_state: yup.string().required("يجب إدخال هذا الحقل"),
+  client_city: yup.string().required("يجب إدخال هذا الحقل"),
 });
 
 function CustomerInfo() {
@@ -43,12 +43,12 @@ function CustomerInfo() {
     resolver: yupResolver(orderFormShema),
   });
 
-  const { orderData, setOrderData } = useOrderContext();
+  const { order, setOrder } = useDataContext();
   let navigate = useNavigate();
 
   const onSubmit = async (values) => {
     if (values) {
-      setOrderData((state) => ({
+      setOrder((state) => ({
         ...state,
         client_details: values,
         permission: ROUTES.ORDER_INFO,
@@ -83,7 +83,7 @@ function CustomerInfo() {
     setCities(filter_cities);
   }, [wilayaSelected]);
 
-  return orderData?.permission !== ROUTES.CUSTOMER_INFO ? (
+  return order?.permission !== ROUTES.CUSTOMER_INFO ? (
     <Error />
   ) : (
     <section className="pt-8 layout">
@@ -97,44 +97,44 @@ function CustomerInfo() {
         <div className="flex flex-col mb-4">
           <div className="grid grid-cols-1 gap-5 mb-2">
             <Input
-              {...register("name")}
+              {...register("client_name")}
               required
               placeholder="الاسم و اللقب"
               label="إسمكم الكامل"
               note="حقل الاسم الكامل مطلوب"
-              error={errors?.name?.message}
+              error={errors?.client_name?.message}
             />
             <Input
-              {...register("phone")}
+              {...register("client_phone")}
               required
               placeholder="رقم الهاتف بدون رمز الدولة"
               label="رقم هاتفكم"
               note="حقل رقم الهاتف لا بد منه لتوصيل طلبكم"
-              error={errors?.phone?.message}
+              error={errors?.client_phone?.message}
             />
             <SelectInput
-              name="state"
+              name="client_state"
               control={control}
               data={filter_wilayas}
               placeholder="إختر ولاية التوصيل"
               searchable
               label="الولاية"
               required
-              error={errors?.state?.message}
+              error={errors?.client_state?.message}
               dropdownPosition="top"
               searchValue={wilayaSelected}
               onSearchChange={(e) => setWilayaSelected(e)}
             />
             {cities.length > 0 && (
               <SelectInput
-                name="city"
+                name="client_city"
                 control={control}
                 data={cities}
                 placeholder="إختر بلدية التوصيل"
                 searchable
                 label="البلدية"
                 required
-                error={errors?.city?.message}
+                error={errors?.client_city?.message}
                 dropdownPosition="top"
               />
             )}

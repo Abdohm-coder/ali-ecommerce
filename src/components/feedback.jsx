@@ -1,46 +1,14 @@
 import { FaRegUser } from "react-icons/fa";
-const data = [
-  {
-    id: "1",
-    name: "Fatma, Boumerdes",
-    avatar: null,
-    feedback:
-      "اليوم 60 ليلة من استعمالي لنابوفا , خليني نكون صريحة طولت باه والفت بيها لكن غير توالفها مابدلوهاش ,أكثر حاجا عجبتني القماش لي مخدومة بيها تاع صيف يعطيك واحد الاحساس تاع البرود في الراسو الرقبة ننصحكم بيها لبنات",
-  },
-  {
-    id: "2",
-    name: "Rachid, Tizi Ouzou",
-    avatar: null,
-    feedback:
-      "j'en ai commandé 2 avec 20% de réduction et ils ont été livrés en 48h L'oreiller le plus confortable de tous les temps",
-  },
-  {
-    id: "3",
-    name: "Hanan, Alger",
-    avatar: null,
-    feedback: "Très confortable avec bonus de réduction des allergies",
-  },
-  {
-    id: "4",
-    name: "Melina, Bedjaia",
-    avatar: null,
-    feedback:
-      "J'adore ! dima noudh sbah b les douleurs au cou et aux épaules. J'utilise mon oreiller depuis quelques semaines maintenant et je n'ai plus de douleurs ! Le meilleur oreiller que j'ai eu !",
-  },
-  {
-    id: "5",
-    name: "Farid, Batna",
-    avatar: null,
-    feedback:
-      "Il garde ma tête plus fraîche tt la nuit et me fournit le soutien parfait",
-  },
-];
+import { useDataContext } from "../utils/data.context";
+
 export default function Feedback() {
+  const { assets } = useDataContext();
+  const { title, reviews } = assets?.homepage?.feedbacks;
   return (
     <section className="flex flex-col w-full py-3">
-      <h2 className=" mb-8">ماذا قال زبائننا عن منتجاتنا؟</h2>
+      <h2 className=" mb-8">{title}</h2>
       <div className="grid grid-cols-1 gap-8">
-        {data.map(({ id, name, feedback, avatar }, index) => (
+        {reviews.map(({ id, name, feedback, avatar }, index) => (
           <>
             <div className="flex justify-end w-full">
               <span>
@@ -61,7 +29,7 @@ export default function Feedback() {
                 <p className="text-light">{feedback}</p>
               </div>
             </div>
-            {index !== data.length - 1 && <hr className="opacity-30" />}
+            {index !== reviews.length - 1 && <hr className="opacity-30" />}
           </>
         ))}
       </div>
