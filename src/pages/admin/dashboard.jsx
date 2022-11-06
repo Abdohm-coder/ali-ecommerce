@@ -36,12 +36,12 @@ function Dashboard() {
   }, []);
 
   const { setTheme } = useThemeContext();
-  return <AuthenticationForm logIn={logIn} />;
-
-  return (
+  return !user ? (
+    <AuthenticationForm logIn={logIn} />
+  ) : (
     <MantineProvider>
       <main className="dashboard w-screen h-screen bg-white flex">
-        <DashSidebar />
+        <DashSidebar logOut={logOut} />
         <DashWrapper />
       </main>
     </MantineProvider>

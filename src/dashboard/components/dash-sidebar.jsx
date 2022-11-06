@@ -3,7 +3,7 @@ import { TbDashboard, TbFileDescription, TbLogout } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
-function DashSidebar() {
+function DashSidebar({ logOut }) {
   return (
     <Paper shadow="lg" radius="none" p="sm" className="sm:w-20 w-16 bg-dark">
       <aside className="flex flex-col h-full w-full justify-center items-center">
@@ -28,7 +28,7 @@ function DashSidebar() {
           </Link>
         </div>
         <div className="grid items-center w-full h-8 justify-center">
-          <ActionIcon size="lg" className="hover:bg-white/20">
+          <ActionIcon onClick={logOut} size="lg" className="hover:bg-white/20">
             <TbLogout color="white" size={24} />
           </ActionIcon>
         </div>

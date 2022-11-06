@@ -11,8 +11,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { ROUTES } from "../../utils/routes";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -23,6 +22,7 @@ const loginSchema = yup.object().shape({
 });
 
 export default function AuthenticationForm({ logIn }) {
+  const [error, setError] = useState(false);
   const {
     register,
     handleSubmit,
@@ -35,14 +35,13 @@ export default function AuthenticationForm({ logIn }) {
     resolver: yupResolver(loginSchema),
   });
 
-  let navigate = useNavigate();
-
   const onSubmit = async (values) => {
     try {
       await logIn(values.email, values.password);
-      navigate(ROUTES.HOME);
+      setError(false);
+      // navigate(ROUTES.HOME);
     } catch (err) {
-      alert(err.message);
+      setError(true);
     }
   };
 
@@ -81,6 +80,11 @@ export default function AuthenticationForm({ logIn }) {
             تسجيل الدخول
           </Button>
         </Group>
+        {error && (
+          <span className="text-center w-full text-red-600 mt-2">
+            كلمة المرور أو الايميل خاطىء
+          </span>
+        )}
       </form>
     </Container>
   );

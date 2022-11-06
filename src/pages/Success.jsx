@@ -6,7 +6,6 @@ import Error from "./error";
 
 function Success() {
   const { order } = useDataContext();
-  console.log(order)
   return order?.permission !== ROUTES.SUCCESS ? (
     <Error />
   ) : (
