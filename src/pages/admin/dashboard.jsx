@@ -1,7 +1,7 @@
 import { MantineProvider } from "@mantine/core";
 import DashSidebar from "../../dashboard/components/dash-sidebar";
 import DashWrapper from "../../dashboard/dashWrapper";
-import PageInfo from "./page-info";
+import AuthenticationForm from "./login-form";
 import { useThemeContext } from "../../utils/theme.context";
 import { useEffect } from "react";
 
@@ -10,6 +10,8 @@ function Dashboard() {
   useEffect(() => {
     setTheme("light");
   }, []);
+  return <AuthenticationForm />;
+  
   return (
     <MantineProvider>
       <main className="dashboard w-screen h-screen bg-white flex">

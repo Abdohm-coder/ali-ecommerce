@@ -17,7 +17,6 @@ export default function FileInput({
   ...rest
 }) {
   const [files, setFiles] = useState([]);
-  console.log(name, getValues(name));
 
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);

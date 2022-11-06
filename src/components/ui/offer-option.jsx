@@ -5,9 +5,9 @@ export default function OfferOption({
   quantity,
   product_price,
   discount,
-  product_discount_price,
+  discount_percentage_value,
   discount_type,
-  discount_value,
+  discount_price,
   badge,
   changeOffer,
   active,
@@ -23,10 +23,10 @@ export default function OfferOption({
         <div className="flex items-center space-x-2 text-sm">
           <strong className="text-discount-percent">{discount}</strong>
           <p>
-            {discount ? product_discount_price : product_price} دج للواحدة{" "}
+            {discount ? discount_price : product_price} دج للواحدة{" "}
             {discount && (
               <strong className="text-discount-percent">
-                ( تخفيض {discount_value}
+                ( تخفيض {discount_percentage_value}
                 {discount_type === "percentage" ? "%" : "دج"} )
               </strong>
             )}

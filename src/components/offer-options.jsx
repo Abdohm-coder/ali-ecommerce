@@ -48,7 +48,7 @@ export default function OfferOptions() {
                 قيمة التخفيض
               </strong>
               <strong className="text-discount-value">
-                دج{offer_options[activeOffer]?.discount_price || 0}
+                دج{offer_options[activeOffer]?.discount_value || 0}
               </strong>
             </div>
             {/* <Badge text={data.offer_options[activeOffer].badge} /> */}
