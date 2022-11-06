@@ -1,9 +1,11 @@
 import {
   arrayUnion,
   doc,
-  serverTimestamp,
   updateDoc,
+  serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
+import { track } from "react-facebook-pixel";
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/ui/order-item";
 import { db } from "../firebase/firebase-config";
@@ -18,14 +20,27 @@ function OrderInfo() {
   let navigate = useNavigate();
 
   const handleSubmitOrder = () => {
+    const ordersCountDoc = doc(db, "statics", "general-statics");
+
+    // Push Order Data
     updateDoc(orderDataDoc, {
-      orders: arrayUnion({ ...order, createdAt: serverTimestamp() }),
-    }).then((res) =>
+      orders: arrayUnion({ ...order, createdAt: Date() }),
+    }).then((res) => {
       setOrder((state) => ({
         ...state,
         permission: ROUTES.SUCCESS,
-      }))
-    );
+      }));
+
+      // Count Orders
+      getDoc(ordersCountDoc).then((res) => {
+        updateDoc(ordersCountDoc, { orders: Number(res.get("orders")) + 1 });
+      });
+
+      // Facebook Track Purchase
+      try {
+        track("Purchase");
+      } catch {}
+    });
 
     navigate(ROUTES.SUCCESS);
 
