@@ -1,20 +1,18 @@
-import { useToggle, upperFirst } from "@mantine/hooks";
+import { upperFirst } from "@mantine/hooks";
 import {
   TextInput,
   PasswordInput,
   Text,
-  Paper,
   Group,
   Button,
-  Divider,
-  Checkbox,
-  Anchor,
   Stack,
   Container,
 } from "@mantine/core";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import { ROUTES } from "../../utils/routes";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -24,14 +22,10 @@ const loginSchema = yup.object().shape({
   password: yup.string().required("كلمة المرور ضرورية"),
 });
 
-export default function AuthenticationForm(props) {
-  const [type, toggle] = useToggle(["login", "register"]);
+export default function AuthenticationForm({ logIn }) {
   const {
     register,
-    control,
     handleSubmit,
-    setValue,
-    getValues,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -41,7 +35,16 @@ export default function AuthenticationForm(props) {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = () => {};
+  let navigate = useNavigate();
+
+  const onSubmit = async (values) => {
+    try {
+      await logIn(values.email, values.password);
+      navigate(ROUTES.HOME);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   return (
     <Container

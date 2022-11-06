@@ -3,15 +3,41 @@ import DashSidebar from "../../dashboard/components/dash-sidebar";
 import DashWrapper from "../../dashboard/dashWrapper";
 import AuthenticationForm from "./login-form";
 import { useThemeContext } from "../../utils/theme.context";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
+} from "firebase/auth";
+
+import { auth } from "../../firebase/firebase-config";
 
 function Dashboard() {
-  const { setTheme } = useThemeContext();
+  const [user, setUser] = useState({});
+
+  function logIn(email, password) {
+    return signInWithEmailAndPassword(auth, email, password);
+  }
+
+  function logOut() {
+    return signOut(auth);
+  }
+
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
+      console.log("Auth", currentuser);
+      setUser(currentuser);
+    });
     setTheme("light");
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
-  return <AuthenticationForm />;
-  
+
+  const { setTheme } = useThemeContext();
+  return <AuthenticationForm logIn={logIn} />;
+
   return (
     <MantineProvider>
       <main className="dashboard w-screen h-screen bg-white flex">
