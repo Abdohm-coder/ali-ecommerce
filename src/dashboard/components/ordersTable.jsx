@@ -13,6 +13,7 @@ function OrdersTable({ orders }) {
         <td>{client_details?.client_phone}</td>
         <td>{order_details?.quantity}</td>
         <td>{order_details?.product_price}</td>
+        <td>{`${order_details?.discount_price} دج`}</td>
         <td>
           {order_details?.discount
             ? `${order_details?.discount_type === "percentage" ? "%" : "دج "} ${
@@ -20,7 +21,7 @@ function OrdersTable({ orders }) {
               }`
             : "دون تخفيض"}
         </td>
-        <td>{order_details?.price_total}</td>
+        <td>{`${order_details?.price_total} دج`}</td>
       </tr>
     )
   );
@@ -33,15 +34,16 @@ function OrdersTable({ orders }) {
         className="w-full min-w-max orders-table">
         <thead>
           <tr>
-            <th style={{ textAlign: "right" }}>Id</th>
-            <th style={{ textAlign: "right" }}>Client name</th>
-            <th style={{ textAlign: "right" }}>Product name</th>
-            <th style={{ textAlign: "right" }}>Address</th>
-            <th style={{ textAlign: "right" }}>Phone number</th>
-            <th style={{ textAlign: "right" }}>Quantity</th>
-            <th style={{ textAlign: "right" }}>Price</th>
-            <th style={{ textAlign: "right" }}>Discount</th>
-            <th style={{ textAlign: "right" }}>Price total</th>
+            <th style={{ textAlign: "right" }}>ID</th>
+            <th style={{ textAlign: "right" }}>إسم الزبون</th>
+            <th style={{ textAlign: "right" }}>إسم المنتج</th>
+            <th style={{ textAlign: "right" }}>العنوان</th>
+            <th style={{ textAlign: "right" }}>رقم الهاتف</th>
+            <th style={{ textAlign: "right" }}>الكمية</th>
+            <th style={{ textAlign: "right" }}>السعر</th>
+            <th style={{ textAlign: "right" }}>السعر بعد التخفيض</th>
+            <th style={{ textAlign: "right" }}>قيمة التخفيض</th>
+            <th style={{ textAlign: "right" }}>المجموع</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
