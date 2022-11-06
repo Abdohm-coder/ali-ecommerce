@@ -1,6 +1,11 @@
 import { ActionIcon, Paper } from "@mantine/core";
 import { useEffect } from "react";
-import { TbDashboard, TbFileDescription, TbLogout } from "react-icons/tb";
+import {
+  TbBuildingStore,
+  TbDashboard,
+  TbFileDescription,
+  TbLogout,
+} from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/routes";
 
@@ -16,7 +21,7 @@ function DashSidebar({ logOut }) {
             />
           </Link>
         </div>
-        <div className="flex flex-1 w-full flex-col items-center justify-center gap-4 mb-40">
+        <div className="flex flex-1 w-full flex-col items-center justify-center gap-4 mb-36">
           <Link to={ROUTES.DASHBOARD}>
             <ActionIcon size="xl" className="hover:bg-white/20">
               <TbDashboard color="white" size={32} />
@@ -28,7 +33,15 @@ function DashSidebar({ logOut }) {
             </ActionIcon>
           </Link>
         </div>
-        <div className="grid items-center w-full h-8 justify-center">
+        <div className="grid items-center w-full h-24 justify-center">
+          <Link to="/">
+            <ActionIcon
+              onClick={logOut}
+              size="lg"
+              className="hover:bg-white/20">
+              <TbBuildingStore color="white" size={24} />
+            </ActionIcon>
+          </Link>
           <ActionIcon onClick={logOut} size="lg" className="hover:bg-white/20">
             <TbLogout color="white" size={24} />
           </ActionIcon>
