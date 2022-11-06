@@ -1,9 +1,8 @@
 import { Paper, Table } from "@mantine/core";
 import React from "react";
 import { useDataContext } from "../../utils/data.context";
-import { orders } from "../../data/order";
 
-function OrdersTable() {
+function OrdersTable({ orders }) {
   const rows = orders.map(
     ({ client_details, order_details, order_id, product_name }) => (
       <tr key={order_id} className="text-right">
@@ -19,7 +18,7 @@ function OrdersTable() {
             ? `${order_details?.discount_type === "percentage" ? "%" : "دج "} ${
                 order_details?.discount_value
               }`
-            : ""}
+            : "دون تخفيض"}
         </td>
         <td>{order_details?.price_total}</td>
       </tr>

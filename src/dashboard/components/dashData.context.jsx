@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "../../firebase/firebase-config";
 
-export const DataContext = createContext();
+export const DashDataContext = createContext();
 
 export const DashDataProvider = ({ children }) => {
-  const [ordersData, setOrdersData] = useState({}); // GET API
+  const [ordersData, setOrdersData] = useState([]); // GET API
   const [staticsData, setStaticsData] = useState({ visits: 0, orders: 0 }); // GET API
   const [pageInfo, setPageInfo] = useState(); // GET API
 
@@ -28,7 +28,7 @@ export const DashDataProvider = ({ children }) => {
   }, []);
 
   return (
-    <DataContext.Provider
+    <DashDataContext.Provider
       value={{
         ordersData,
         staticsData,
@@ -36,14 +36,14 @@ export const DashDataProvider = ({ children }) => {
         pageInfo,
       }}>
       {children}
-    </DataContext.Provider>
+    </DashDataContext.Provider>
   );
 };
 
 export const useDashDataContext = () => {
-  const context = useContext(DataContext);
+  const context = useContext(DashDataContext);
   if (context === undefined) {
-    throw new Error("useDataContext must be used within a DataProvider");
+    throw new Error("useDashDataContext must be used within a DataProvider");
   }
   return context;
 };

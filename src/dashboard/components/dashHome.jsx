@@ -26,7 +26,7 @@ function Main() {
       <Divider variant="solid" />
       <Widgets data={staticsData} />
       <Pixel />
-      <OrdersTable />
+      <OrdersTable orders={ordersData} />
       <Modal
         size="lg"
         opened={opened}

@@ -24,14 +24,18 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-      setUser(currentuser);
-    });
-    setTheme("light");
-
-    return () => {
-      unsubscribe();
-    };
+    if (auth.currentUser) {
+      setUser(auth.currentUser);
+      setTheme("light");
+    } else {
+      const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
+        setUser(currentuser);
+      });
+      setTheme("light");
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
 
   const { setTheme } = useThemeContext();
