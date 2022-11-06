@@ -8,6 +8,7 @@ import TextArea from "../../components/ui/textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 
 const pageschema = yup.object().shape({
   homepage: yup.object().shape({
@@ -20,15 +21,16 @@ const pageschema = yup.object().shape({
     feedbacks: yup.object().shape({
       has_feedbacks: yup.boolean().required("هذا الحقل مطلوب"),
       reviews_number: yup.number().typeError("يجب أن يكون رقما فقط"),
+      reviews_average: yup.number().typeError("يجب أن يكون رقما فقط"),
     }),
   }),
 });
 
 const defaultValues = {
-  logo: {
-    dark_mode: "",
-    light_mode: "",
-  },
+  // logo: {
+  //   dark_mode: "",
+  //   light_mode: "",
+  // },
   homepage: {
     hero: {
       images: [],
@@ -179,10 +181,10 @@ export default function PageInfoForm({ initialData }) {
 
     // Collecting data
     const input = {
-      logo: {
-        dark_mode: values.logo.dark_mode,
-        light_mode: values.logo.light_mode,
-      },
+      // logo: {
+      //   dark_mode: values.logo.dark_mode,
+      //   light_mode: values.logo.light_mode,
+      // },
       homepage: {
         hero: {
           images: values.homepage.hero.images,
@@ -206,11 +208,12 @@ export default function PageInfoForm({ initialData }) {
       },
       footer: filter_footer,
     };
-    console.log(input);
+    
+    toast.success("مبروك، تم التعديل بنجاح")
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
-      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title="الشعار ( Logo )"
           details="أدخل شعار مشروعك بالوضع الليلي والنهاري"
@@ -236,7 +239,7 @@ export default function PageInfoForm({ initialData }) {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title="الصفحة الرئيسية"

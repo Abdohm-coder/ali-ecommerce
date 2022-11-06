@@ -90,7 +90,7 @@ p {
 }
 
 .mantine-Input-input {
-  @apply !text-right !text-base !font-medium placeholder:!text-base placeholder:!font-black placeholder:!text-light;
+  @apply !text-right !text-base !font-medium placeholder:!text-sm placeholder:!font-medium placeholder:!text-light;
 }
 
 .icon svg {
@@ -107,7 +107,7 @@ p {
   @apply sm:max-w-[128px] object-contain;
 }
 
-/* --------------------------- Manitne From Style --------------------------- */
+/* --------------------------- Manitne Form Style --------------------------- */
 
 .mantine-Radio-body {
   gap: 5px;

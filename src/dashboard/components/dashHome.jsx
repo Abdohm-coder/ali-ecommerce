@@ -27,7 +27,7 @@ function Main() {
         opened={opened}
         withCloseButton={false}
         title="تفاصيل المنتج">
-        <ProductForm setOpened={setOpened} />
+        <ProductForm initialData={{}} setOpened={setOpened} />
       </Modal>
       <Group position="center">
         <Button onClick={() => setOpened(true)}>Open Modal</Button>
