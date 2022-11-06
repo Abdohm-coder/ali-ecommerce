@@ -11,18 +11,16 @@ import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 
 const pageschema = yup.object().shape({
-  homepage: yup.object().shape({
-    hero: yup.object().shape({
-      title: yup.string().required("العنوان الرئيسي مطلوب"),
-    }),
-    features: yup.object().shape({
-      has_features: yup.boolean().required("هذا الحقل مطلوب"),
-    }),
-    feedbacks: yup.object().shape({
-      has_feedbacks: yup.boolean().required("هذا الحقل مطلوب"),
-      reviews_number: yup.number().typeError("يجب أن يكون رقما فقط"),
-      reviews_average: yup.number().typeError("يجب أن يكون رقما فقط"),
-    }),
+  hero: yup.object().shape({
+    title: yup.string().required("العنوان الرئيسي مطلوب"),
+  }),
+  features: yup.object().shape({
+    has_features: yup.boolean().required("هذا الحقل مطلوب"),
+  }),
+  feedbacks: yup.object().shape({
+    has_feedbacks: yup.boolean().required("هذا الحقل مطلوب"),
+    reviews_number: yup.number().typeError("يجب أن يكون رقما فقط"),
+    reviews_average: yup.number().typeError("يجب أن يكون رقما فقط"),
   }),
 });
 
@@ -31,37 +29,36 @@ const defaultValues = {
   //   dark_mode: "",
   //   light_mode: "",
   // },
-  homepage: {
-    hero: {
-      images: [],
-      title: "",
-    },
-    records: [
-      {
-        id: "",
-        icon: "",
-        text: "",
-        span: "",
-      },
-    ],
-    features: {
-      has_features: false,
-      title: "",
-      description: "",
-      images: [],
-    },
-    feedbacks: {
-      has_feedbacks: false,
-      title: "",
-      reviews_number: 0,
-      reviews_average: 0,
-    },
+  hero: {
+    images: [],
+    title: "",
   },
+  records: [
+    {
+      id: "",
+      icon: "",
+      text: "",
+      span: "",
+    },
+  ],
+  features: {
+    has_features: false,
+    title: "",
+    description: "",
+    images: [],
+  },
+  feedbacks: {
+    has_feedbacks: false,
+    title: "",
+    reviews_number: 0,
+    reviews_average: 0,
+  },
+  footer: [],
 };
 
 export default function PageInfoForm({ initialData }) {
   const [reviews, setReviews] = useState(
-    initialData?.homepage?.feedbacks?.reviews || [
+    initialData?.feedbacks?.reviews || [
       {
         id: uuidv4(),
         name: "",
@@ -90,13 +87,13 @@ export default function PageInfoForm({ initialData }) {
     ]
   );
   const [hasFeedbacks, setHasFeedbacks] = useState(
-    initialData?.homepage?.feedbacks?.has_feedbacks && true
+    initialData?.feedbacks?.has_feedbacks && true
   );
   const [hasFeatures, setHasFeatures] = useState(
-    initialData?.homepage?.features?.has_features && true
+    initialData?.features?.has_features && true
   );
   const [items, setItems] = useState(
-    initialData?.homepage?.features?.items_non_image || [
+    initialData?.features?.items_non_image || [
       {
         id: uuidv4(),
         title: "",
@@ -116,7 +113,7 @@ export default function PageInfoForm({ initialData }) {
     ]
   );
   const [items_image, setItemsImage] = useState(
-    initialData?.homepage?.features?.items_with_image || [
+    initialData?.features?.items_with_image || [
       {
         id: uuidv4(),
         title: "",
@@ -158,13 +155,8 @@ export default function PageInfoForm({ initialData }) {
   });
 
   const onSubmit = async (values) => {
-    const {
-      title: features_title,
-      description,
-      images,
-    } = values.homepage.features;
-    const { title, reviews_number, reviews_average } =
-      values.homepage.feedbacks;
+    const { title: features_title, description, images } = values.features;
+    const { title, reviews_number, reviews_average } = values.feedbacks;
 
     // Filter Feedbacks and featuers and footer
     const filter_footer = footer.filter(
@@ -178,38 +170,38 @@ export default function PageInfoForm({ initialData }) {
       ({ title, description, image }) =>
         title !== "" || description !== "" || image !== ""
     );
-
     // Collecting data
     const input = {
       // logo: {
       //   dark_mode: values.logo.dark_mode,
       //   light_mode: values.logo.light_mode,
       // },
-      homepage: {
-        hero: {
-          images: values.homepage.hero.images,
-          title: values.homepage.hero.title,
-        },
-        features: {
-          has_features: hasFeatures,
-          title: hasFeatures ? features_title : "",
-          description: hasFeatures ? description : "",
-          images: hasFeatures ? images : [],
-          items_non_image: hasFeatures ? filter_items : [],
-          items_with_image: hasFeatures ? filter_items_image : [],
-        },
-        feedbacks: {
-          has_feedbacks: hasFeedbacks,
-          title: hasFeedbacks ? title : "",
-          reviews_number: hasFeedbacks ? Number(reviews_number) : 0,
-          reviews_average: hasFeedbacks ? Number(reviews_average) : 0,
-          reviews: hasFeedbacks ? filter_reviews : [],
-        },
+      hero: {
+        images: values.hero.images,
+        title: values.hero.title,
+      },
+      features: {
+        has_features: hasFeatures,
+        title: hasFeatures ? features_title : "",
+        description: hasFeatures ? description : "",
+        images: hasFeatures ? images : [],
+        items_non_image: hasFeatures ? filter_items : [],
+        items_with_image: hasFeatures ? filter_items_image : [],
+      },
+      feedbacks: {
+        has_feedbacks: hasFeedbacks,
+        title: hasFeedbacks ? title : "",
+        reviews_number: hasFeedbacks ? Number(reviews_number) : 0,
+        reviews_average: hasFeedbacks ? Number(reviews_average) : 0,
+        reviews: hasFeedbacks ? filter_reviews : [],
       },
       footer: filter_footer,
     };
+
+    // POST input variable here to "page-info" collection
     
-    toast.success("مبروك، تم التعديل بنجاح")
+    // Notification
+    toast.success("مبروك، تم التعديل بنجاح");
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -249,18 +241,18 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <Input
-              {...register("homepage.hero.title")}
+              {...register(".hero.title")}
               required
               placeholder="أدخل العنوان الرئيسي للصفحة"
               label="العنوان الرئيسي للصفحة"
               note="العنوان الرئيسي مطلوب"
-              error={errors?.homepage?.hero?.title?.message}
+              error={errors?.hero?.title?.message}
             />
             <div>
               <strong className="text">معرض الصور الأساسي</strong>
               <FileInput
                 getValues={getValues}
-                name="homepage.hero.images"
+                name=".hero.images"
                 setValue={setValue}
                 multiple
                 control={control}
@@ -281,14 +273,14 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded flex flex-col space-y-6 w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <SelectInput
-              name="homepage.feedbacks.has_features"
+              name=".feedbacks.has_features"
               control={control}
               data={["true", "false"]}
               placeholder="هل ستكتب مميزات المنتوج؟"
               label="وضع مميزات المنتوج"
               required
               searchable
-              error={errors?.homepage?.features?.has_features?.message}
+              error={errors?.features?.has_features?.message}
               dropdownPosition="top"
               value={hasFeatures.toString()}
               onChange={(e) => setHasFeatures(e === "true")}
@@ -298,7 +290,7 @@ export default function PageInfoForm({ initialData }) {
             <>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register("homepage.features.title")}
+                  {...register(".features.title")}
                   placeholder="أدخل عنوان مميزات المنتوج (مثل: مالذي يجعل وسادة نابوفا مميزة جدا؟)"
                   label="عنوان مميزات المنتوج"
                 />
@@ -306,7 +298,7 @@ export default function PageInfoForm({ initialData }) {
                   <strong className="text">معرض الصور الثاني</strong>
                   <FileInput
                     getValues={getValues}
-                    name="homepage.features.images"
+                    name=".features.images"
                     setValue={setValue}
                     multiple
                     control={control}
@@ -409,14 +401,14 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded flex flex-col justify-between space-y-6 w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <SelectInput
-              name="homepage.feedbacks.has_feedbacks"
+              name=".feedbacks.has_feedbacks"
               control={control}
               data={["true", "false"]}
               placeholder="هل ستكتب آراء العملاء؟"
               label="وضع الآراء"
               required
               searchable
-              error={errors?.homepage?.feedbacks?.has_feedbacks?.message}
+              error={errors?.feedbacks?.has_feedbacks?.message}
               dropdownPosition="top"
               value={hasFeedbacks.toString()}
               onChange={(e) => setHasFeedbacks(e === "true")}
@@ -426,23 +418,23 @@ export default function PageInfoForm({ initialData }) {
             <>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register("homepage.feedbacks.title")}
+                  {...register(".feedbacks.title")}
                   placeholder="أدخل العنوان (مثل: ماذا قال زبائننا عن منتجاتنا؟ )"
                   label="العنوان"
                 />
                 <Input
-                  {...register("homepage.feedbacks.reviews_number")}
+                  {...register(".feedbacks.reviews_number")}
                   placeholder="أدخل عدد التقييمات"
                   label="عدد التقييمات"
-                  error={errors?.homepage?.feedbacks?.reviews_number?.message}
+                  error={errors?.feedbacks?.reviews_number?.message}
                 />
               </div>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register("homepage.feedbacks.reviews_average")}
+                  {...register(".feedbacks.reviews_average")}
                   placeholder="أدخل معدل التقييمات ( مثل 4.6 )"
                   label="معدل التقييمات"
-                  error={errors?.homepage?.feedbacks?.reviews_average?.message}
+                  error={errors?.feedbacks?.reviews_average?.message}
                 />
               </div>
               <h2 className="font-black text-base my-6 text-btn-dark">

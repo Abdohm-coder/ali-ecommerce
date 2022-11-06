@@ -6,7 +6,7 @@ import { useDataContext } from "../utils/data.context";
 function Feautres() {
   const { pageInfo } = useDataContext();
   const { title, description, items_non_image, items_with_image, images } =
-    pageInfo?.homepage?.features;
+    pageInfo?.features;
 
   const miniFeatures = items_non_image.map(({ id, title }) => {
     return (

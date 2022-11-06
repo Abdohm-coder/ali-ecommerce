@@ -3,7 +3,7 @@ import { useDataContext } from "../utils/data.context";
 
 export default function Feedback() {
   const { pageInfo } = useDataContext();
-  const { title, reviews } = pageInfo?.homepage?.feedbacks;
+  const { title, reviews } = pageInfo?.feedbacks;
   return (
     <section className="flex flex-col w-full py-3">
       <h2 className=" mb-8">{title}</h2>

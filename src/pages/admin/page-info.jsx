@@ -8,108 +8,108 @@ const defaultValues = {
   //   light_mode:
   //     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkQAAABoCAYAAAAQEe8+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDcuMi1jMDAwIDc5LjU2NmViYzViNCwgMjAyMi8wNS8wOS0wODoyNTo1NSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QkYzQTc1NzZGMUIxMTFFQ0IyMkQ4MTgyNDZFMzlFRjAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QkYzQTc1NzVGMUIxMTFFQ0IyMkQ4MTgyNDZFMzlFRjAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIzLjQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowRkY0ODJGQkYwRjIxMUVDQjIyRDgxODI0NkUzOUVGMCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowRkY0ODJGQ0YwRjIxMUVDQjIyRDgxODI0NkUzOUVGMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvkqAAMAAAZNSURBVHja7N1Lbls5EAVQl6FlZDFZTfa/A2aSQZD4J0uPrM85QM8alkgWi5cvshw/f/x6OWi9cIUwBQDwdTcBCAAQiIQgAEAgEoQAAIFIEAIABCJBCAAQiAQhAGCwV2EIABCIhCEAQCAShgAAgUgYAgAEImEIABCIhCEAQCAShgAAgUgYAgAEImEIABCIAAAEov94OgQAjA5EwhBfoU5qr531A/ScP27WiCeFojAV4JLzD32BMm5u/TyxkWp+9Q4968ba+LPVmhpL23M8IWJSKLqi8WvwfQ7vSWu9ErxuFBxXNFonveuTQOTpEM/awDZbnYPQU6Lvz100GINekfPStxrvm5Q9x6/dYzPDY3Ve4QPqmd/jM9+bYG+eBCKEIh5aD2vVM3RU+m1C71PPSROILDKaB/QJIWvo3EWTGuJgIAK31NnB1Br1qfs1oF69v9yBsVzPEYjQRKBP3Xe6fCz1wolAZAGw2c259ald96vpvH1nXGG+j81L2Z7jCRGVmhwIRTOD7FIjxiAQYfOze46tS62aFxbe5lfL68xHihoWiLARoG7N2z/6l/kQiGi2iTSWXM3JeuQ/OJZ5+1QMq4nK83C8ngUibAiwV4zdWoyfh1eLiU1lHq2FWm88d9OfjnhKdkcggoybwmEBglSVeVjWoj6BCJvMvFmDOmtlPb5n6m9YxYA9IRDhwGDbfFkD9Afar4FARJUNp/FhH/CIGLY+odbvc7NHKLZJfNnamSZi7mfPbRyuv6616Y/wJiIQ4fCA92tqJar7jCHorf9/JV/nCReHDj1y+1z6JzPcSsyJef/4YImh4640Z8ue9f4FIiYHAMGICTfuVXSsMXQt1+BaLT2XAhE2jDkw31x1mIbabLmPWvYBgQiBALgyvMSgsRpX4f4uENFp0/hjlwJot8NmNRlb2Jdt9k/b/S8QISDAbNHodbr9jTOhc2NfF4iweYzTHIM9Mn7fC0R0bkYObSofBjteb/dThWxPMbp8PUA0rP/try8Q4RAzLnML9sh4AhGaEswUw1739PvxdCj5+xCIEIqMxbwap7VSO+PXVyACmHeg+XuAe+fD06ECBCJwOGuY74+r4webQR98g792D+CfNXaLhHMexerA06En84QIHNoaJzC+HwpEIAzR+5ZPv/XwdOgCAhFo/BooMP6iKBDBsE3PqFs+/dal4tOhqFDvAhHMbfieEgEujAIRzNrsjLvl0299qn92KHXdC0Sg0QtxDlsY33MEIsjLlwI6HNS2tep2mUm7BwQicBhPPfCEIdBzBCJwg3ZQD55jgdXeUBMCEZoQGqx6Rg0dfM9XjeehniMQoQHMCBJhvo/UsHndH5TNucuLQIRQhEardq1Ns7WMgnUQB8f17fEIRGhG/Q8pwXJvvYZ1E8KoRyBi2iFDoRtbsfqsWKMCSu5wGs3XP1XPualzijWlzg18Ffu5Dsg+dec7bhjfcwQihCI6HbrdDtcu9d5hDLvXIqzJ3p4jEFH5dr6abV6haHb46bo2LjCU4DNEdAhGgOASTV5jx+ssNS0QIRQ5iIxVje9Zn2W9qUQgwoEhIMCzg0znuo7iP38NrGeBiHGhyD+hCYEO4bPB6NRTIXufh/lQNR0PjioHrmBAtToNNXxpn/F06Lpxfzq3nhDhNo0wqK7vWbe//zMvtCEQ4fAQCIDzPcbTocPjF4jo3rDcHoVCh7D5gE8JRGiaggDY12ffg6dDCXqvQITmiXCols0B4wlETGuipxupAIBAYC12rqWe88X5EIjQwEjboFDHxs0uAhEOEwc/6th4z7wvT4cSXcIEIhwmpG1QqGP7lV09xzdV4zDZcyCvDWMQWmbXsb8fVmsNKj8datlzPCECt88JDdz6GNcky9rfP08CEVy/+Trc1HCAGM/z3m9Yk3wEIhAw0t7YGFvDvmXeHtrecwQiuLYZO+ARKGYFumg8vtYhVSCCups/mr6uEDnzAPNUyN45Om8CEVx3oGhOCBr9gtsj4xH4EteHQAQ1D5TujVWYnFPHQkKNPdO+5whEcE1DWOYCwejD149he8SeSd5zfDEjDsX7x7zMzbExOlSum0tfD2E/jh6jQATXhSKoftisJ/2c6b3CnBQgEIHbGKhzcziezxABAAKRKQAABCIAAIEIAEAgAgAY7bcAAwBVb4NuRlboswAAAABJRU5ErkJggg==",
   // },
-  homepage: {
-    hero: {
-      images: [],
-      title: "وسادة نابوفا الطبية",
+  hero: {
+    images: [
+      "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+    ],
+    title: "وسادة نابوفا الطبية",
+  },
+  records: [
+    {
+      id: "",
+      icon: "",
+      text: "",
+      span: "",
     },
-    records: [
+  ],
+  features: {
+    has_features: true,
+    title: "ما الذي يجعل وسادة نابوفا مميزة جدا؟",
+    description:
+      "تتميز مادة المايكروفايبر بأنها ناعمة وداعمة في نفس الوقت، إذن فهي تحتضن الرأس والرقبة بلطف مع دعم عدم الضغط، ستنام بشكل مريح بغض النظر وعن وضعية نومك المفضلة.",
+    images: [
+      "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+      ,
+      "https://images.unsplash.com/photo-1548484352-dc0b3cc1bca4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
+    ],
+    items_non_image: [
       {
-        id: "",
-        icon: "",
-        text: "",
-        span: "",
+        id: uuidv4(),
+        title: "مناسبة للحساسية المفرطة",
+      },
+      {
+        id: uuidv4(),
+        title: "🇪🇸 جودة إسبانية ممتازة",
+      },
+      {
+        id: uuidv4(),
+        title: "مستخدمة في أرقى الفنادق",
+      },
+      {
+        id: uuidv4(),
+        title: "مصنوعة لتدوم",
       },
     ],
-    features: {
-      has_features: true,
-      title: "ما الذي يجعل وسادة نابوفا مميزة جدا؟",
-      description:
-        "تتميز مادة المايكروفايبر بأنها ناعمة وداعمة في نفس الوقت، إذن فهي تحتضن الرأس والرقبة بلطف مع دعم عدم الضغط، ستنام بشكل مريح بغض النظر وعن وضعية نومك المفضلة.",
-      images: [
-        "https://images.unsplash.com/photo-1625266008996-67bc5f9ffb40?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-        ,
-        "https://images.unsplash.com/photo-1548484352-dc0b3cc1bca4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80",
-      ],
-      items_non_image: [
-        {
-          id: uuidv4(),
-          title: "مناسبة للحساسية المفرطة",
-        },
-        {
-          id: uuidv4(),
-          title: "🇪🇸 جودة إسبانية ممتازة",
-        },
-        {
-          id: uuidv4(),
-          title: "مستخدمة في أرقى الفنادق",
-        },
-        {
-          id: uuidv4(),
-          title: "مصنوعة لتدوم",
-        },
-      ],
-      items_with_image: [
-        {
-          id: uuidv4(),
-          image:
-            "https://images.unsplash.com/photo-1626218174358-7769486c4b79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
-          title: "تبقى باردة طوال الليل 🥶",
-          description:
-            "يعمل الميكروفايبر كشبكة تهوية ماصة للرطوبة يتيح تدفق الهواء بشكل مستمر حتى تتمكن من الحفاظ على برودة الراس طوال الليل.",
-        },
-        {
-          id: uuidv4(),
-          image:
-            "https://images.unsplash.com/photo-1626218174358-7769486c4b79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
-          title: "فائقة التحمل 💪🏻",
-          description:
-            "مصنعة من نسيج الميكروفايبر الذاكري، الذي يتميز بالمتانة الفائقة ، و يجعل الوسادة تحافظ على شكلها ليلة بعد ليلة.",
-        },
-      ],
-    },
-    feedbacks: {
-      has_feedbacks: true,
-      title: "ماذا قال زبائننا عن منتجاتنا؟",
-      reviews_number: 242,
-      reviews_average: 4.6,
-      reviews: [
-        {
-          id: "",
-          name: "Fatma, Boumerdes",
-          avatar: null,
-          feedback:
-            "اليوم 60 ليلة من استعمالي لنابوفا , خليني نكون صريحة طولت باه والفت بيها لكن غير توالفها مابدلوهاش ,أكثر حاجا عجبتني القماش لي مخدومة بيها تاع صيف يعطيك واحد الاحساس تاع البرود في الراسو الرقبة ننصحكم بيها لبنات",
-        },
-        {
-          id: "",
-          name: "Rachid, Tizi Ouzou",
-          avatar: null,
-          feedback:
-            "j'en ai commandé 2 avec 20% de réduction et ils ont été livrés en 48h L'oreiller le plus confortable de tous les temps",
-        },
-        {
-          id: "",
-          name: "Hanan, Alger",
-          avatar: null,
-          feedback: "Très confortable avec bonus de réduction des allergies",
-        },
-        {
-          id: "",
-          name: "Melina, Bedjaia",
-          avatar: null,
-          feedback:
-            "J'adore ! dima noudh sbah b les douleurs au cou et aux épaules. J'utilise mon oreiller depuis quelques semaines maintenant et je n'ai plus de douleurs ! Le meilleur oreiller que j'ai eu !",
-        },
-        {
-          id: "",
-          name: "Farid, Batna",
-          avatar: null,
-          feedback:
-            "Il garde ma tête plus fraîche tt la nuit et me fournit le soutien parfait",
-        },
-      ],
-    },
+    items_with_image: [
+      {
+        id: uuidv4(),
+        image:
+          "https://images.unsplash.com/photo-1626218174358-7769486c4b79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+        title: "تبقى باردة طوال الليل 🥶",
+        description:
+          "يعمل الميكروفايبر كشبكة تهوية ماصة للرطوبة يتيح تدفق الهواء بشكل مستمر حتى تتمكن من الحفاظ على برودة الراس طوال الليل.",
+      },
+      {
+        id: uuidv4(),
+        image:
+          "https://images.unsplash.com/photo-1626218174358-7769486c4b79?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80",
+        title: "فائقة التحمل 💪🏻",
+        description:
+          "مصنعة من نسيج الميكروفايبر الذاكري، الذي يتميز بالمتانة الفائقة ، و يجعل الوسادة تحافظ على شكلها ليلة بعد ليلة.",
+      },
+    ],
+  },
+  feedbacks: {
+    has_feedbacks: true,
+    title: "ماذا قال زبائننا عن منتجاتنا؟",
+    reviews_number: 242,
+    reviews_average: 4.6,
+    reviews: [
+      {
+        id: "",
+        name: "Fatma, Boumerdes",
+        avatar: null,
+        feedback:
+          "اليوم 60 ليلة من استعمالي لنابوفا , خليني نكون صريحة طولت باه والفت بيها لكن غير توالفها مابدلوهاش ,أكثر حاجا عجبتني القماش لي مخدومة بيها تاع صيف يعطيك واحد الاحساس تاع البرود في الراسو الرقبة ننصحكم بيها لبنات",
+      },
+      {
+        id: "",
+        name: "Rachid, Tizi Ouzou",
+        avatar: null,
+        feedback:
+          "j'en ai commandé 2 avec 20% de réduction et ils ont été livrés en 48h L'oreiller le plus confortable de tous les temps",
+      },
+      {
+        id: "",
+        name: "Hanan, Alger",
+        avatar: null,
+        feedback: "Très confortable avec bonus de réduction des allergies",
+      },
+      {
+        id: "",
+        name: "Melina, Bedjaia",
+        avatar: null,
+        feedback:
+          "J'adore ! dima noudh sbah b les douleurs au cou et aux épaules. J'utilise mon oreiller depuis quelques semaines maintenant et je n'ai plus de douleurs ! Le meilleur oreiller que j'ai eu !",
+      },
+      {
+        id: "",
+        name: "Farid, Batna",
+        avatar: null,
+        feedback:
+          "Il garde ma tête plus fraîche tt la nuit et me fournit le soutien parfait",
+      },
+    ],
   },
   footer: [
     {
@@ -125,6 +125,7 @@ const defaultValues = {
   ],
 };
 export default function PageInfo() {
+  // const { pageInfo: defaultValues } = useDataContext();
   return (
     <>
       <div className="py-5 sm:py-8 flex border-b border-dashed border-gray-200">

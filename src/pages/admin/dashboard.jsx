@@ -13,7 +13,7 @@ import {
 import { auth } from "../../firebase/firebase-config";
 
 function Dashboard() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(false);
 
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -25,7 +25,6 @@ function Dashboard() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-      console.log("Auth", currentuser);
       setUser(currentuser);
     });
     setTheme("light");

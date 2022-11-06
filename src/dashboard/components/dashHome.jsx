@@ -4,6 +4,7 @@ import { Button, Divider, Group } from "@mantine/core";
 import { useState } from "react";
 import { Modal } from "@mantine/core";
 import ProductForm from "./product-form";
+import Pixel from "./pixel";
 
 function Main() {
   const [opened, setOpened] = useState(false);
@@ -21,6 +22,7 @@ function Main() {
       </Group>
       <Divider variant="solid" />
       <Widgets />
+      <Pixel />
       <OrdersTable />
       <Modal
         size="lg"

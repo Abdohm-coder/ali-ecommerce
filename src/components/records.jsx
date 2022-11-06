@@ -2,7 +2,7 @@ import { useDataContext } from "../utils/data.context";
 
 export default function Records() {
   const { pageInfo } = useDataContext();
-  const records = pageInfo?.homepage?.records;
+  const records = pageInfo?.records;
   return (
     <section>
       <div className="flex w-full mb-8">

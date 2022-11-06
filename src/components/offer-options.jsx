@@ -7,9 +7,9 @@ import OfferOption from "./ui/offer-option";
 
 export default function OfferOptions() {
   const { order, setOrder, pageInfo } = useDataContext();
-  const { offer_options, product_name } = pageInfo?.homepage?.product;
+  const { offer_options, product_name } = pageInfo?.product;
 
-  const [activeOffer, setOffer] = useState(1);
+  const [activeOffer, setOffer] = useState(0);
 
   const handleSubmitOffer = () => {
     setOrder(() => ({

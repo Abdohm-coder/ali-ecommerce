@@ -152,6 +152,9 @@ function ProductForm({ setOpened, initialData = {} }) {
         })
       ),
     };
+
+    // POST input variable here to "orders" collection
+
     setOpened(false);
     toast.success("مبروك، تم التعديل بنجاح");
   };

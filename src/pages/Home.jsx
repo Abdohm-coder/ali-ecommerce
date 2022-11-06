@@ -9,8 +9,9 @@ import Records from "../components/records";
 
 function Home() {
   const { pageInfo } = useDataContext();
-  const { images, title } = pageInfo?.homepage?.hero;
-  const { reviews_average, reviews_number } = pageInfo?.homepage?.feedbacks;
+  if (pageInfo === undefined || pageInfo === null) return "loading";
+  const { images, title } = pageInfo?.hero;
+  const { reviews_average, reviews_number } = pageInfo?.feedbacks;
 
   return (
     <section className="layout">

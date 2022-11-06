@@ -1,5 +1,12 @@
+import {
+  arrayUnion,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/ui/order-item";
+import { db } from "../firebase/firebase-config";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
@@ -7,13 +14,23 @@ import Error from "./error";
 function OrderInfo() {
   const { order, setOrder } = useDataContext();
   const { product_name, client_details, order_details } = order;
+  const orderDataDoc = doc(db, "orders", "ORDERS-DATA");
   let navigate = useNavigate();
+
   const handleSubmitOrder = () => {
-    setOrder((state) => ({
-      ...state,
-      permission: ROUTES.SUCCESS,
-    }));
+    updateDoc(orderDataDoc, {
+      orders: arrayUnion({ ...order, createdAt: serverTimestamp() }),
+    }).then((res) =>
+      setOrder((state) => ({
+        ...state,
+        permission: ROUTES.SUCCESS,
+      }))
+    );
+
     navigate(ROUTES.SUCCESS);
+
+    // POST ORDER HERE FILE
+    console.log(order);
   };
   return order?.permission !== ROUTES.ORDER_INFO ? (
     <Error />
