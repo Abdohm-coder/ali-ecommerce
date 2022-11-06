@@ -5,9 +5,12 @@ import { useState } from "react";
 import { Modal } from "@mantine/core";
 import ProductForm from "./product-form";
 import Pixel from "./pixel";
+import { useDashDataContext } from "./dashData.context";
 
 function Main() {
+  const { ordersData, staticsData, setStaticsData } = useDashDataContext();
   const [opened, setOpened] = useState(false);
+
   return (
     <div className="flex flex-col gap-4">
       <Group position="apart">
@@ -21,7 +24,7 @@ function Main() {
         </Button>
       </Group>
       <Divider variant="solid" />
-      <Widgets />
+      <Widgets data={staticsData} />
       <Pixel />
       <OrdersTable />
       <Modal
