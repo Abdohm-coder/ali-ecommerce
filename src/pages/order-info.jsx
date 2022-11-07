@@ -53,8 +53,8 @@ function OrderInfo() {
     <section className="pt-8 layout">
       <h1 className="text text-4xl font-black mb-2">تأكدوا من طلبكم</h1>
       <p className="text mb-4">
-        تأكدو من المعلومات التي أدخلتموها و أضغطو على الزر أسفله حتى نرسل لكم
-        رسالة نصية قصيرة و نقوم بتأكيد طلبيتكم
+        تأكد من المعلومات التي أدخلتها و أضغط على الزر أسفله حتى نتصل بكم و نقوم
+        بتأكيد طلبيتكم
       </p>
       <span className="rounded-md p-3 inline-flex dark:bg-btn-light/5 dark:text-gray-100 mb-4">
         <strong>
@@ -99,9 +99,9 @@ function OrderInfo() {
       <button onClick={handleSubmitOrder} className="btn">
         تأكيد الطلبية
       </button>
-      <p className="text-light text-sm text-center max-w-[250px] mx-auto mt-2">
+      {/* <p className="text-light text-sm text-center max-w-[250px] mx-auto mt-2">
         بضغطك على زر الطلب فأنت توافق على قوانين الاستخدام و بوليصة التأمين
-      </p>
+      </p> */}
     </section>
   );
 }

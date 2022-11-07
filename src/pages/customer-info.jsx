@@ -14,11 +14,12 @@ import transferImg from "../assets/transfer-money.svg";
 import { useDataContext } from "../utils/data.context";
 import Error from "./error";
 import HeroCarousel from "../components/carousel";
+import { Paper } from "@mantine/core";
 
 const featured_icons = [
   { icon: paymentImg, text: "الدفع عند الاستلام" },
+  { icon: shippingImg, text: "توصيل لباب المنزل" },
   { icon: qualityImg, text: " ضمان جودة عالية" },
-  { icon: shippingImg, text: "توصيل لباب المنزل (1-3 أيام)" },
   { icon: transferImg, text: "استبدال واسترجاع سهل" },
 ];
 
@@ -97,7 +98,9 @@ function CustomerInfo() {
         </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <div className="flex flex-col mb-4">
+        <Paper
+          shadow="sm"
+          className="flex flex-col mb-4 dark:bg-dark px-4 py-6">
           <div className="grid grid-cols-1 gap-5 mb-2">
             <Input
               {...register("client_name")}
@@ -145,12 +148,12 @@ function CustomerInfo() {
           <button type="submit" className="btn">
             مواصلة الطلب
           </button>
-        </div>
+        </Paper>
       </form>
       <div className="grid grid-cols-4 gap-6">
         {featured_icons.map(({ icon, text }) => (
-          <div className="flex flex-col items-center justify-center" key={icon}>
-            <img className="h-auto max-w-full" src={icon} alt={text} />
+          <div className="flex flex-col items-center justify-start" key={icon}>
+            <img className="h-24 w-16" src={icon} alt={text} />
             <p className="text-base font-black text-center text">{text}</p>
           </div>
         ))}

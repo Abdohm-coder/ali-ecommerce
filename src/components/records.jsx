@@ -19,7 +19,7 @@ export default function Records() {
                   className="icon text-pink-800 "
                   dangerouslySetInnerHTML={{ __html: icon }}
                 />
-                <strong className="text-center text-xl text-pink-500">
+                <strong className="text-center text-xl dark:text-btn-light text-btn-dark">
                   {span}
                 </strong>
               </Paper>
