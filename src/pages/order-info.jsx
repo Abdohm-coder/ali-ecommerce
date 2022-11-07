@@ -5,6 +5,7 @@ import {
   serverTimestamp,
   getDoc,
 } from "firebase/firestore";
+import { useEffect } from "react";
 import { track } from "react-facebook-pixel";
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/ui/order-item";
@@ -12,12 +13,19 @@ import { db } from "../firebase/firebase-config";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
+import { pageView } from "react-facebook-pixel";
 
 function OrderInfo() {
   const { order, setOrder } = useDataContext();
   const { product_name, client_details, order_details } = order;
   const orderDataDoc = doc(db, "orders", "ORDERS-DATA");
   let navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      pageView();
+    } catch {}
+  }, []);
 
   const handleSubmitOrder = () => {
     const ordersCountDoc = doc(db, "statics", "general-statics");

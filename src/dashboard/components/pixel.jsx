@@ -1,14 +1,36 @@
 import { Button, Card, Paper, TextInput } from "@mantine/core";
-import { useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
+import { db } from "../../firebase/firebase-config";
 
 export default function Pixel() {
   const [pixels, setPixels] = useState([""]);
+  const FbPixelDoc = doc(db, "page-info", "facebook-pixel");
+
+  // GET PIXEL DATA
+  useEffect(() => {
+    getDoc(FbPixelDoc).then((doc) => {
+      const items = [];
+      items.push(doc.data());
+      setPixels(items[0]?.ids);
+    });
+  }, []);
 
   const onSubmit = () => {
     const filter = pixels.filter((pixel) => pixel !== "");
     setPixels(filter);
-    // POST Facebook Pixel 
+    // POST Facebook Pixel
+    updateDoc(FbPixelDoc, {
+      ids: filter,
+    })
+      .then(() => {
+        toast.success("مبروك، تم التعديل بنجاح");
+      })
+      .catch(() => {
+        toast.warn("أوبس، حدث خطأ");
+      });
   };
 
   return (
