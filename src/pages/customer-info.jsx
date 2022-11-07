@@ -15,6 +15,7 @@ import { useDataContext } from "../utils/data.context";
 import Error from "./error";
 import HeroCarousel from "../components/carousel";
 import { Paper } from "@mantine/core";
+import { pageView } from "react-facebook-pixel";
 
 const featured_icons = [
   { icon: paymentImg, text: "الدفع عند الاستلام" },
@@ -47,6 +48,11 @@ function CustomerInfo() {
 
   const { order, setOrder, pageInfo } = useDataContext();
   const images = pageInfo?.hero?.images;
+  useEffect(() => {
+    try {
+      pageView();
+    } catch {}
+  }, []);
   let navigate = useNavigate();
 
   const onSubmit = async (values) => {

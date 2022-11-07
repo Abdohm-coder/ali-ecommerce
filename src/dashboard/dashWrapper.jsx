@@ -1,16 +1,13 @@
 import { Outlet } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import { DashDataProvider } from "./components/dashData.context";
 
 function DashWrapper() {
   return (
-    <DashDataProvider>
-      <section className="flex-1 py-32 p-4 sm:p-8 overflow-x-auto">
-        <ToastContainer autoClose={2000} theme="colored" />
-        <Outlet />
-      </section>
-    </DashDataProvider>
+    <section className="flex-1 py-32 p-4 sm:p-8 overflow-x-auto">
+      <ToastContainer autoClose={2000} theme="colored" />
+      <Outlet />
+    </section>
   );
 }
 

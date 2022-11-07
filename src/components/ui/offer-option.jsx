@@ -30,7 +30,6 @@ export default function OfferOption({
           />
         </Group>
         <div className="flex items-center space-x-2 text-sm">
-          <strong className="text-discount-percent">{discount}</strong>
           <p>
             {discount ? discount_price : product_price} دج للواحدة{" "}
             {discount && (

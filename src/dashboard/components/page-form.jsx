@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import SelectInput from "../../components/select-input";
 import Description from "../../components/ui/description";
 import FileInput from "../../components/ui/file-input";
@@ -9,6 +9,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
+import { arrayUnion, doc, Firestore, updateDoc } from "firebase/firestore";
+import { db, storage } from "../../firebase/firebase-config";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { useEffect } from "react";
+import { data } from "../../data/page-info";
+import { Button } from "@mantine/core";
 
 const pageschema = yup.object().shape({
   hero: yup.object().shape({
@@ -23,28 +35,40 @@ const pageschema = yup.object().shape({
     reviews_average: yup.number().typeError("يجب أن يكون رقما فقط"),
   }),
 });
+const emptyFooter = {
+  id: uuidv4(),
+  label: "",
+  text: "",
+};
+
+const emptyItemsImage = {
+  id: uuidv4(),
+  title: "",
+  description: "",
+  image: "",
+};
+
+const emptyItem = {
+  id: uuidv4(),
+  title: "",
+};
+
+const emptyReview = {
+  id: uuidv4(),
+  name: "",
+  feedback: "",
+};
 
 const defaultValues = {
-  // logo: {
-  //   dark_mode: "",
-  //   light_mode: "",
-  // },
   hero: {
     images: [],
     title: "",
   },
-  records: [
-    {
-      id: "",
-      icon: "",
-      text: "",
-      span: "",
-    },
-  ],
   features: {
     has_features: false,
     title: "",
     description: "",
+    items_with_image: [emptyItemsImage],
     images: [],
   },
   feedbacks: {
@@ -53,95 +77,23 @@ const defaultValues = {
     reviews_number: 0,
     reviews_average: 0,
   },
-  footer: [],
+  footer: [emptyFooter],
 };
 
 export default function PageInfoForm({ initialData }) {
-  const [reviews, setReviews] = useState(
-    initialData?.feedbacks?.reviews || [
-      {
-        id: uuidv4(),
-        name: "",
-        feedback: "",
-      },
-      {
-        id: uuidv4(),
-        name: "",
-        feedback: "",
-      },
-      {
-        id: uuidv4(),
-        name: "",
-        feedback: "",
-      },
-      {
-        id: uuidv4(),
-        name: "",
-        feedback: "",
-      },
-      {
-        id: uuidv4(),
-        name: "",
-        feedback: "",
-      },
-    ]
-  );
+  const pageInfoDataDoc = doc(db, "page-info", "homepage");
   const [hasFeedbacks, setHasFeedbacks] = useState(
-    initialData?.feedbacks?.has_feedbacks && true
+    (initialData?.feedbacks?.has_feedbacks !== undefined &&
+      initialData?.feedbacks?.has_feedbacks) ||
+      false
   );
   const [hasFeatures, setHasFeatures] = useState(
-    initialData?.features?.has_features && true
+    (initialData?.features?.has_features !== undefined &&
+      initialData?.features?.has_features) ||
+      false
   );
-  const [items, setItems] = useState(
-    initialData?.features?.items_non_image || [
-      {
-        id: uuidv4(),
-        title: "",
-      },
-      {
-        id: uuidv4(),
-        title: "",
-      },
-      {
-        id: uuidv4(),
-        title: "",
-      },
-      {
-        id: uuidv4(),
-        title: "",
-      },
-    ]
-  );
-  const [items_image, setItemsImage] = useState(
-    initialData?.features?.items_with_image || [
-      {
-        id: uuidv4(),
-        title: "",
-        description: "",
-        image: "",
-      },
-      {
-        id: uuidv4(),
-        title: "",
-        description: "",
-        image: "",
-      },
-    ]
-  );
-  const [footer, setFooter] = useState(
-    initialData?.footer || [
-      {
-        id: uuidv4(),
-        label: "number",
-        text: "",
-      },
-      {
-        id: uuidv4(),
-        label: "",
-        text: "",
-      },
-    ]
-  );
+  const [images, setImages] = useState(initialData?.features?.images || []);
+
   const {
     register,
     control,
@@ -154,40 +106,241 @@ export default function PageInfoForm({ initialData }) {
     resolver: yupResolver(pageschema),
   });
 
+  const {
+    fields: footer,
+    append: appendFooter,
+    remove: removeFooter,
+  } = useFieldArray({
+    control,
+    name: "footer",
+  });
+
+  const {
+    fields: items_image,
+    append: appendItems,
+    remove: removeItems,
+  } = useFieldArray({
+    control,
+    name: "features.items_with_image",
+  });
+
+  const {
+    fields: items,
+    append: appendItem,
+    remove: removeItem,
+  } = useFieldArray({
+    control,
+    name: "features.items_non_image",
+  });
+
+  const {
+    fields: reviews,
+    append: appendReviews,
+    remove: removeReviews,
+  } = useFieldArray({
+    control,
+    name: "feedbacks.reviews",
+  });
+
+  useEffect(() => {
+    // HERO Delete unnicessries images
+    const hero_deleteRef = ref(storage, "hero/");
+    listAll(hero_deleteRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item)
+          .then((url) => {
+            if (!getValues("hero.images").includes(url)) {
+              deleteObject(ref(storage, item.fullPath))
+                .then()
+                .catch(() => toast.warn("أوبس، هناك خطأ"));
+            }
+          })
+          .catch(() => toast.warn("أوبس، هناك خطأ"));
+      });
+    });
+
+    // FEATURES Delete unnicessries images
+    const deleteRef = ref(storage, "features/");
+    listAll(deleteRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item)
+          .then((url) => {
+            if (!images.includes(url)) {
+              deleteObject(ref(storage, item.fullPath))
+                .then()
+                .catch(() => toast.warn("أوبس، هناك خطأ"));
+            }
+          })
+          .catch(() => toast.warn("أوبس، هناك خطأ"));
+      });
+    });
+    // FEATURES ITEMS WITH IMAGES Delete unnicessries images
+    const deleteItemsRef = ref(storage, "items_with_image/");
+    listAll(deleteItemsRef).then((res) => {
+      res.items.forEach((item) => {
+        getDownloadURL(item)
+          .then((url) => {
+            const delete_url = items_image.filter(({ image }) =>
+              image.includes(url)
+            );
+            if (delete_url.length === 0) {
+              deleteObject(ref(storage, item.fullPath))
+                .then()
+                .catch(() => toast.warn("أوبس، هناك خطأ"));
+            }
+          })
+          .catch(() => toast.warn("أوبس، هناك خطأ"));
+      });
+    });
+  }, []);
+
   const onSubmit = async (values) => {
-    const { title: features_title, description, images } = values.features;
+    const { title: features_title, description } = values.features;
     const { title, reviews_number, reviews_average } = values.feedbacks;
 
     // Filter Feedbacks and featuers and footer
-    const filter_footer = footer.filter(
+    const filter_footer = values?.footer?.filter(
       ({ label, text }) => label !== "" || text !== ""
     );
-    const filter_reviews = reviews.filter(
+    const filter_reviews = values?.feedbacks?.reviews?.filter(
       ({ name, feedback }) => name !== "" || feedback !== ""
     );
-    const filter_items = items.filter(({ title }) => title !== "");
-    const filter_items_image = items_image.filter(
-      ({ title, description, image }) =>
-        title !== "" || description !== "" || image !== ""
+    const filter_items = values?.features?.items_non_image?.filter(
+      ({ title }) => title !== ""
     );
-    // Collecting data
-    const input = {
-      // logo: {
-      //   dark_mode: values.logo.dark_mode,
-      //   light_mode: values.logo.light_mode,
-      // },
-      hero: {
-        images: values.hero.images,
-        title: values.hero.title,
-      },
-      features: {
-        has_features: hasFeatures,
-        title: hasFeatures ? features_title : "",
-        description: hasFeatures ? description : "",
-        images: hasFeatures ? images : [],
-        items_non_image: hasFeatures ? filter_items : [],
-        items_with_image: hasFeatures ? filter_items_image : [],
-      },
+    const filter_items_image = values?.features?.items_with_image?.filter(
+      ({ title, description }) => title !== "" || description !== ""
+    );
+
+    // Upload Images
+    // hero/images, features/images, features/items_with_images
+
+    const uploadImage = () => {
+      // Upload Hero Images
+      let hero_items = [];
+      values?.hero?.images
+        .filter((image) => typeof image !== "string")
+        .forEach((imageUpload) => {
+          const imageRef = ref(storage, `hero/${imageUpload.name + uuidv4()}`);
+
+          const uploadTask = uploadBytesResumable(imageRef, imageUpload);
+
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            () => toast.warn("أوبس، هناك خطأ"),
+            () => {
+              // download url
+              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                hero_items.push(url);
+                updateDoc(pageInfoDataDoc, {
+                  "hero.images": hero_items,
+                })
+                  .then(() => {})
+                  .catch(() => toast.warn("أوبس، هناك خطأ"));
+              });
+            }
+          );
+        });
+      // Upload Features Images
+      let features_items = [];
+      images
+        .filter((image) => typeof image !== "string")
+        .forEach((imageUpload) => {
+          const imageRef = ref(
+            storage,
+            `features/${imageUpload.name + uuidv4()}`
+          );
+
+          const uploadTask = uploadBytesResumable(imageRef, imageUpload);
+
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {},
+            (err) => toast.warn("أوبس، هناك خطأ"),
+            () => {
+              // download url
+              getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                features_items.push(url);
+                updateDoc(pageInfoDataDoc, {
+                  "features.images": features_items,
+                })
+                  .then(() => {})
+                  .catch((err) => toast.warn("أوبس، هناك خطأ"));
+              });
+            }
+          );
+        });
+      // Upload Features Items with Images
+      if (
+        hasFeatures &&
+        filter_items_image.filter(({ image }) => typeof image === "string")
+          .length === filter_items_image.length
+      ) {
+        filter_items_image.forEach(
+          ({ id, title, description, image }, index) => {
+            const input = {
+              image,
+              id,
+              title,
+              description,
+            };
+            updateDoc(pageInfoDataDoc, {
+              "features.items_with_image":
+                index === 0 ? [input] : arrayUnion(input),
+            }).then(() => {});
+          }
+        );
+      }
+      hasFeatures
+        ? filter_items_image
+            .filter(({ image }) => typeof image !== "string")
+            .forEach(({ image: imageUpload }, index) => {
+              const imageRef = ref(
+                storage,
+                `items_with_image/${imageUpload?.name + uuidv4()}`
+              );
+              const uploadTask = uploadBytesResumable(imageRef, imageUpload);
+
+              uploadTask.on(
+                "state_changed",
+                (snapshot) => {},
+                (err) => toast.warn("أوبس، هناك خطأ"),
+                () => {
+                  // download url
+                  getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    const input = {
+                      image: url,
+                      id: filter_items_image[index].id,
+                      title: filter_items_image[index].title,
+                      description: filter_items_image[index].description,
+                    };
+                    updateDoc(pageInfoDataDoc, {
+                      "features.items_with_image":
+                        filter_items_image.filter(
+                          ({ image }) => typeof image !== "string"
+                        ).length === filter_items_image.length
+                          ? index === 0
+                            ? [input]
+                            : arrayUnion(input)
+                          : arrayUnion(input),
+                    }).then(() => {});
+                  });
+                }
+              );
+            })
+        : null;
+    };
+    uploadImage();
+
+    // POST input variable here to "page-info" collection
+
+    updateDoc(pageInfoDataDoc, {
+      "hero.title": values.hero.title,
+      "features.has_features": hasFeatures,
+      "features.title": hasFeatures ? features_title : "",
+      "features.description": hasFeatures ? description : "",
+      "features.items_non_image": hasFeatures ? filter_items : [],
       feedbacks: {
         has_feedbacks: hasFeedbacks,
         title: hasFeedbacks ? title : "",
@@ -196,12 +349,11 @@ export default function PageInfoForm({ initialData }) {
         reviews: hasFeedbacks ? filter_reviews : [],
       },
       footer: filter_footer,
-    };
-
-    // POST input variable here to "page-info" collection
-    
-    // Notification
-    toast.success("مبروك، تم التعديل بنجاح");
+    })
+      .then(() => {
+        toast.success("مبروك، تم التعديل بنجاح");
+      })
+      .catch(() => toast.warn("أوبس، هناك خطأ"));
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -241,7 +393,7 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <Input
-              {...register(".hero.title")}
+              {...register("hero.title")}
               required
               placeholder="أدخل العنوان الرئيسي للصفحة"
               label="العنوان الرئيسي للصفحة"
@@ -252,11 +404,24 @@ export default function PageInfoForm({ initialData }) {
               <strong className="text">معرض الصور الأساسي</strong>
               <FileInput
                 getValues={getValues}
-                name=".hero.images"
+                name="hero.images"
                 setValue={setValue}
                 multiple
                 control={control}
                 label="معرض الصور الأساسي"
+                text="اسحب هنا او اضغط لرفع الصور"
+                className="mt-4"
+              />
+              <strong className="text mt-4">معرض الصور الثاني</strong>
+              <FileInput
+                getValues={getValues}
+                name="features.images"
+                setValue={setValue}
+                simple
+                multiple
+                control={control}
+                onChange={setImages}
+                label="معرض الصور الثاني"
                 text="اسحب هنا او اضغط لرفع الصور"
                 className="mt-4"
               />
@@ -273,7 +438,7 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded flex flex-col space-y-6 w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <SelectInput
-              name=".feedbacks.has_features"
+              name="feedbacks.has_features"
               control={control}
               data={["true", "false"]}
               placeholder="هل ستكتب مميزات المنتوج؟"
@@ -290,38 +455,36 @@ export default function PageInfoForm({ initialData }) {
             <>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register(".features.title")}
+                  {...register("features.title")}
                   placeholder="أدخل عنوان مميزات المنتوج (مثل: مالذي يجعل وسادة نابوفا مميزة جدا؟)"
                   label="عنوان مميزات المنتوج"
                 />
-                <div>
-                  <strong className="text">معرض الصور الثاني</strong>
-                  <FileInput
-                    getValues={getValues}
-                    name=".features.images"
-                    setValue={setValue}
-                    multiple
-                    control={control}
-                    label="معرض الصور الثاني"
-                    text="اسحب هنا او اضغط لرفع الصور"
-                    className="mt-4"
-                  />
-                </div>
               </div>
               <h2 className="font-black my-6 text-base text-btn-dark">
                 مميزات المنتوج
               </h2>
+              <div className="w-full flex flex-wrap justify-end">
+                <Button
+                  variant="filled"
+                  onClick={() =>
+                    items.length > 3 ? {} : appendItem(emptyItem)
+                  }
+                  className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
+                  إضافة مميز
+                </Button>
+                <Button
+                  variant="filled"
+                  onClick={() => removeItem(items.length - 1)}
+                  className="hover:bg-red-500 bg-red-600">
+                  حذف مميز
+                </Button>
+              </div>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
-                {items.map(({ id, title }, index) => (
+                {items.map(({ id }, index) => (
                   <Input
                     key={id}
-                    value={title}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      setItems((t) =>
-                        t.map((e, i) => (i === index ? text : e))
-                      );
-                    }}
+                    {...register(`features.items_non_image.${index}.title`)}
+                    error={errors?.features?.items_non_image?.[index]?.title}
                     placeholder={`أدخل المميز ${index + 1}`}
                     label={`المميز ${index + 1}`}
                   />
@@ -331,38 +494,45 @@ export default function PageInfoForm({ initialData }) {
                 مميزات المنتوج مع الصور
               </h2>
               <div className="my-6 w-full">
-                {items_image.map(({ id, title, description, ..._ }, index) => (
+                <div className="w-full flex flex-wrap justify-end">
+                  <Button
+                    variant="filled"
+                    onClick={() =>
+                      items_image.length > 1 ? {} : appendItems(emptyItemsImage)
+                    }
+                    className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
+                    إضافة مميز
+                  </Button>
+                  <Button
+                    variant="filled"
+                    onClick={() => removeItems(items_image.length - 1)}
+                    className="hover:bg-red-500 bg-red-600">
+                    حذف مميز
+                  </Button>
+                </div>
+                {items_image.map(({ id }, index) => (
                   <div
                     key={id}
                     className="grid w-full sm:grid-cols-2 my-6 gap-6">
                     <div className="h-full space-y-6">
                       <Input
-                        value={title}
-                        onChange={(e) => {
-                          const text = e.target.value;
-                          setItemsImage((t) =>
-                            t.map(({ title, ...rest }, i) =>
-                              i === index
-                                ? { title: text, ...rest }
-                                : { title, ...rest }
-                            )
-                          );
-                        }}
+                        {...register(
+                          `features.items_with_image.${index}.title`
+                        )}
+                        error={
+                          errors?.features?.items_with_image?.[index]?.title
+                        }
                         placeholder={`أدخل المميز ${index + 1 + items.length}`}
                         label={`مميز ${index + 1 + items.length}`}
                       />
                       <TextArea
-                        value={description}
-                        onChange={(e) => {
-                          const text = e.target.value;
-                          setItemsImage((t) =>
-                            t.map(({ description, ...rest }, i) =>
-                              i === index
-                                ? { description: text, ...rest }
-                                : { description, ...rest }
-                            )
-                          );
-                        }}
+                        {...register(
+                          `features.items_with_image.${index}.description`
+                        )}
+                        error={
+                          errors?.features?.items_with_image?.[index]
+                            ?.description
+                        }
                         placeholder={`أدخل التفاصيل`}
                         label={`التفاصيل`}
                       />
@@ -370,16 +540,10 @@ export default function PageInfoForm({ initialData }) {
                     <div>
                       <strong className="text">الصورة {index + 1}</strong>
                       <FileInput
+                        setValue={setValue}
+                        name={`features.items_with_image.${index}.image`}
+                        control={control}
                         getValues={getValues}
-                        onChange={(file) => {
-                          setItemsImage((t) =>
-                            t.map(({ image, ...rest }, i) =>
-                              i === index
-                                ? { ...rest, image: file }
-                                : { ...rest, image }
-                            )
-                          );
-                        }}
                         label="ارفع الصورة "
                         text="اسحب هنا او اضغط لرفع الصور"
                         className="mt-4"
@@ -401,7 +565,7 @@ export default function PageInfoForm({ initialData }) {
         <div className="p-5 md:p-8 shadow rounded flex flex-col justify-between space-y-6 w-full">
           <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
             <SelectInput
-              name=".feedbacks.has_feedbacks"
+              name="feedbacks.has_feedbacks"
               control={control}
               data={["true", "false"]}
               placeholder="هل ستكتب آراء العملاء؟"
@@ -414,16 +578,30 @@ export default function PageInfoForm({ initialData }) {
               onChange={(e) => setHasFeedbacks(e === "true")}
             />
           </div>
+          <div className="w-full flex flex-wrap justify-end">
+            <Button
+              variant="filled"
+              onClick={() => appendReviews(emptyReview)}
+              className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
+              إضافة رأي
+            </Button>
+            <Button
+              variant="filled"
+              onClick={() => removeReviews(reviews.length - 1)}
+              className="hover:bg-red-500 bg-red-600">
+              حذف رأي
+            </Button>
+          </div>
           {hasFeedbacks && (
             <>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register(".feedbacks.title")}
+                  {...register("feedbacks.title")}
                   placeholder="أدخل العنوان (مثل: ماذا قال زبائننا عن منتجاتنا؟ )"
                   label="العنوان"
                 />
                 <Input
-                  {...register(".feedbacks.reviews_number")}
+                  {...register("feedbacks.reviews_number")}
                   placeholder="أدخل عدد التقييمات"
                   label="عدد التقييمات"
                   error={errors?.feedbacks?.reviews_number?.message}
@@ -431,7 +609,7 @@ export default function PageInfoForm({ initialData }) {
               </div>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
                 <Input
-                  {...register(".feedbacks.reviews_average")}
+                  {...register("feedbacks.reviews_average")}
                   placeholder="أدخل معدل التقييمات ( مثل 4.6 )"
                   label="معدل التقييمات"
                   error={errors?.feedbacks?.reviews_average?.message}
@@ -440,37 +618,17 @@ export default function PageInfoForm({ initialData }) {
               <h2 className="font-black text-base my-6 text-btn-dark">
                 الآراء
               </h2>
-              {reviews.map(({ name, feedback }, index) => (
-                <div
-                  key={`الرأي ${index}`}
-                  className="grid w-full sm:grid-cols-2 my-6 gap-6">
+              {reviews?.map(({ id, name, feedback }, index) => (
+                <div key={id} className="grid w-full sm:grid-cols-2 my-6 gap-6">
                   <Input
-                    value={name}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      setReviews((t) =>
-                        t.map(({ name, ...rest }, i) =>
-                          i === index
-                            ? { name: text, ...rest }
-                            : { name, ...rest }
-                        )
-                      );
-                    }}
+                    {...register(`feedbacks.reviews.${index}.name`)}
+                    error={errors?.feedbacks?.reviews?.[index]?.name}
                     placeholder={`أدخل الاسم ${index + 1}`}
                     label={`الاسم ${index + 1}`}
                   />
                   <TextArea
-                    value={feedback}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      setReviews((t) =>
-                        t.map(({ feedback, ...rest }, i) =>
-                          i === index
-                            ? { feedback: text, ...rest }
-                            : { feedback, ...rest }
-                        )
-                      );
-                    }}
+                    {...register(`feedbacks.reviews.${index}.feedback`)}
+                    error={errors?.feedbacks?.reviews?.[index]?.feedback}
                     placeholder={`أدخل الرأي`}
                     label={`الرأي`}
                   />
@@ -487,33 +645,33 @@ export default function PageInfoForm({ initialData }) {
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
         <div className="p-5 md:p-8 shadow rounded flex flex-col justify-between space-y-6 w-full">
-          {footer.map(({ id, text, label }, index) => (
+          <div className="w-full flex flex-wrap justify-end">
+            <Button
+              variant="filled"
+              onClick={() =>
+                footer.length > 2 ? {} : appendFooter(emptyFooter)
+              }
+              className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
+              إضافة معلومة
+            </Button>
+            <Button
+              variant="filled"
+              onClick={() => removeFooter(footer.length - 1)}
+              className="hover:bg-red-500 bg-red-600">
+              حذف معلومة
+            </Button>
+          </div>
+          {footer.map(({ id }, index) => (
             <div key={id} className="grid w-full sm:grid-cols-2 my-6 gap-6">
               <Input
-                value={label}
-                onChange={(e) => {
-                  const text = e.target.value;
-                  setFooter((t) =>
-                    t.map(({ label, ...rest }, i) =>
-                      i === index
-                        ? { label: text, ...rest }
-                        : { label, ...rest }
-                    )
-                  );
-                }}
+                {...register(`footer.${index}.label`)}
+                error={errors?.footer?.[index]?.label}
                 placeholder={`أدخل المعلومة (مثل رقم الهاتف)`}
                 label={`المعلومة ${index + 1}`}
               />
               <Input
-                value={text}
-                onChange={(e) => {
-                  const text = e.target.value;
-                  setFooter((t) =>
-                    t.map(({ info, ...rest }, i) =>
-                      i === index ? { info: text, ...rest } : { info, ...rest }
-                    )
-                  );
-                }}
+                {...register(`footer.${index}.text`)}
+                error={errors?.footer?.[index]?.text}
                 placeholder={`أدخل نص المعلومة (مثل 05550555)`}
                 label={`نص المعلومة ${index + 1}`}
               />

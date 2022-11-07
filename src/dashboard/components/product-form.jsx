@@ -11,8 +11,12 @@ import {
 } from "@mantine/core";
 import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/firebase-config";
 
 const emptyOffer = {
+  id: uuidv4(),
   discount: false,
   discount_value: 0,
   discount_percentage_value: 0,
@@ -73,7 +77,8 @@ const productFormSchema = yup.object().shape({
   ),
 });
 
-function ProductForm({ setOpened, initialData = {} }) {
+function ProductForm({ setOpened, initialData }) {
+  const pageInfoDataDoc = doc(db, "page-info", "homepage");
   const {
     register,
     control,
@@ -83,7 +88,7 @@ function ProductForm({ setOpened, initialData = {} }) {
     watch,
     formState: { errors },
   } = useForm({
-    defaultValues: Object.keys(initialData).length > 0 || defaultValues,
+    defaultValues: initialData || defaultValues,
     resolver: yupResolver(productFormSchema),
   });
 
@@ -104,10 +109,11 @@ function ProductForm({ setOpened, initialData = {} }) {
       return shipping ? total * quantity + Number(shipping) : total * quantity;
     };
     const input = {
-      product_name: product_name,
-      product_price: product_price,
-      offer_options: offer_options.map(
+      product_name,
+      product_price,
+      offer_options: offer_options?.map(
         ({
+          id,
           shipping,
           discount_price,
           discount_type,
@@ -116,6 +122,7 @@ function ProductForm({ setOpened, initialData = {} }) {
           discount,
           badge,
         }) => ({
+          product_price,
           discount,
           discount_price:
             discount_type === "percentage"
@@ -149,11 +156,20 @@ function ProductForm({ setOpened, initialData = {} }) {
             shipping,
             discount_percentage_value * 0.01
           ),
+          id,
         })
       ),
     };
 
+
     // POST input variable here to "orders" collection
+    updateDoc(pageInfoDataDoc, {
+      product: input,
+    })
+      .then(() => {
+        toast.success("مبروك، تم التعديل بنجاح");
+      })
+      .catch(() => toast.warn("أوبس، هناك خطأ"));
 
     setOpened(false);
     toast.success("مبروك، تم التعديل بنجاح");
@@ -302,13 +318,13 @@ function ProductForm({ setOpened, initialData = {} }) {
           </Button>
           <Button
             variant="filled"
-            onClick={() => remove(fields.length - 1)}
+            onClick={() => fields.length === 1 ? {} : remove(fields.length - 1)}
             className="hover:bg-red-500 bg-red-600">
             حذف عرض
           </Button>
         </div>
-        {fields.map((field, index) => (
-          <Offer key={field} index={index} />
+        {fields.map(({ id }, index) => (
+          <Offer key={id} index={index} />
         ))}
       </Paper>
       <Divider my="sm" className="w-full" />

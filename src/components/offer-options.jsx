@@ -5,17 +5,32 @@ import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import OfferOption from "./ui/offer-option";
 import { Paper } from "@mantine/core";
+import { v4 as uuidv4 } from "uuid";
 
 export default function OfferOptions() {
   const { order, setOrder, pageInfo } = useDataContext();
-  const { offer_options, product_name } = pageInfo?.product;
+  // if (!pageInfo?.product || Object.keys(pageInfo?.product).length === 0) return;
+  const { offer_options, product_name, product_price } = pageInfo?.product;
+  const defaultOffer = {
+    shipping: null,
+    quantity: 1,
+    product_price,
+    discount: false,
+    discount_type: "",
+    discount_value: 0,
+    product_discount_price: 0,
+    price_before: 0,
+    price_total: product_price,
+    id: uuidv4(),
+  };
 
-  const [activeOffer, setOffer] = useState(0);
+  const [activeOffer, setOffer] = useState(1);
 
   const handleSubmitOffer = () => {
     setOrder(() => ({
       product_name,
-      order_details: offer_options[activeOffer],
+      order_details:
+        activeOffer === 0 ? defaultOffer : offer_options[activeOffer - 1],
       permission: ROUTES.CUSTOMER_INFO,
     }));
   };
@@ -32,11 +47,14 @@ export default function OfferOptions() {
         className="flex flex-col space-y-3 dark:bg-dark bg-white rounded-xl p-3">
         {offer_options.map((option, index) => (
           <OfferOption
-            key={option.id}
+            key="deffault offer"
+            product_price={product_price}
+            badge="العرض العادي"
+            discount={false}
+            quantity={1}
             active={activeOffer}
-            index={index}
             changeOffer={setOffer}
-            {...option}
+            index={0}
           />
         ))}
         <Link to={ROUTES.CUSTOMER_INFO}>
@@ -44,7 +62,7 @@ export default function OfferOptions() {
             أطلب الأن
           </button>
         </Link>
-        {offer_options[activeOffer].discount && (
+        {activeOffer > 0 && offer_options[activeOffer - 1].discount && (
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center text-sm">
               <strong className="dark:text-white pl-2 text-dark">

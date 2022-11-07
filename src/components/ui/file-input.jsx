@@ -4,6 +4,7 @@ import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { Controller } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 export default function FileInput({
   control,
@@ -11,12 +12,17 @@ export default function FileInput({
   setValue,
   label,
   text,
-  multiple,
+  multiple = false,
   onChange = null,
   getValues = () => {},
+  simple = false,
   ...rest
 }) {
   const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    if (getValues(name) && onChange && simple) onChange(getValues(name));
+  }, []);
 
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
@@ -47,12 +53,12 @@ export default function FileInput({
 
   return (
     <div className="flex flex-col">
-      {onChange ? (
+      {onChange !== null ? (
         <Dropzone
           {...rest}
           onDrop={(file) => {
             setFiles(file);
-            onChange(multiple ? file.map(({ path }) => path) : file[0].path);
+            onChange(multiple ? file.map((f) => f) : file[0]);
           }}
           onReject={() => {
             toast.warn("عذرا، لا يمكن قبول الملف");
@@ -97,7 +103,7 @@ export default function FileInput({
                 setFiles(file);
                 setValue(
                   name,
-                  multiple ? file.map(({ path }) => path) : file[0].path
+                  multiple ? file.map((f) => f) : file[0]
                 );
               }}
               onReject={() => {

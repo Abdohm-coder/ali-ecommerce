@@ -1,25 +1,30 @@
 import { Paper, Table } from "@mantine/core";
 import moment from "moment/moment";
 import React from "react";
-import { useDataContext } from "../../utils/data.context";
-
 function OrdersTable({ orders }) {
-  const rows = orders.map(
-    ({ client_details, order_details, order_id, product_name, createdAt }) => (
-      <tr key={order_id} className="text-right">
-        <td>{order_id}</td>
+  const rows = orders?.map(
+    ({ client_details, order_details, product_name, order_id, createdAt }) => (
+      <tr key={order_details?.id} className="text-right">
+        <td className="max-w-[200px]">{order_id}</td>
         <td>{client_details?.client_name}</td>
         <td>{product_name}</td>
+        <td>{`${client_details?.client_state}, ${client_details?.client_city}`}</td>
         <td>{`${client_details?.client_state}, ${client_details?.client_city}`}</td>
         <td>{client_details?.client_phone}</td>
         <td style={{ direction: "ltr" }}>{moment.unix(createdAt).from()}</td>
         <td>{order_details?.quantity}</td>
         <td>{`${order_details?.product_price} دج`}</td>
-        <td>{`${order_details?.discount_price} دج`}</td>
+        <td>
+          {order_details?.discount
+            ? `${order_details?.discount_price} دج`
+            : "دون تخفيض"}
+        </td>
         <td>
           {order_details?.discount
             ? `${order_details?.discount_type === "percentage" ? "%" : "دج "} ${
-                order_details?.discount_value
+                order_details?.discount_type === "percentage"
+                  ? order_details?.discount_percentage_value
+                  : order_details?.discount_value
               }`
             : "دون تخفيض"}
         </td>
@@ -39,17 +44,26 @@ function OrdersTable({ orders }) {
             <th style={{ textAlign: "right" }}>ID</th>
             <th style={{ textAlign: "right" }}>إسم الزبون</th>
             <th style={{ textAlign: "right" }}>إسم المنتج</th>
-            <th style={{ textAlign: "right" }}>العنوان</th>
+            <th style={{ textAlign: "right" }}>إسم الولاية</th>
+            <th style={{ textAlign: "right" }}>إسم البلدية</th>
             <th style={{ textAlign: "right" }}>رقم الهاتف</th>
             <th style={{ textAlign: "right" }}>وقت الطلب</th>
             <th style={{ textAlign: "right" }}>الكمية</th>
-            <th style={{ textAlign: "right" }}>السعر</th>
+            <th style={{ textAlign: "right" }}>سعر المنتج</th>
             <th style={{ textAlign: "right" }}>السعر بعد التخفيض</th>
             <th style={{ textAlign: "right" }}>قيمة التخفيض</th>
             <th style={{ textAlign: "right" }}>المجموع</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        {orders?.length === 0 ? (
+          <tbody className="text-center relative h-14 w-full">
+            <tr className="absolute left-1/2">
+              <td>لا توجد طلبات</td>
+            </tr>
+          </tbody>
+        ) : (
+          <tbody>{rows}</tbody>
+        )}
       </Table>
     </Paper>
   );

@@ -5,7 +5,7 @@ import { useRef } from "react";
 function HeroCarousel({ images, withIndicators, isHero, height }) {
   const autoplay = useRef(Autoplay({ delay: 2000 }));
 
-  const slides = images.map((url) => {
+  const slides = images?.map((url) => {
     return (
       <Carousel.Slide
         key={url}

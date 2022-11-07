@@ -1,4 +1,5 @@
 import { arrayUnion, doc, updateDoc, getDoc } from "firebase/firestore";
+import { useEffect } from "react";
 import { track } from "react-facebook-pixel";
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/ui/order-item";
@@ -6,6 +7,7 @@ import { db } from "../firebase/firebase-config";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
+import { pageView } from "react-facebook-pixel";
 import moment from "moment";
 import { useState } from "react";
 
@@ -16,6 +18,12 @@ function OrderInfo() {
   let navigate = useNavigate();
   const [ordersNumber, setOrdersNumber] = useState();
   const ordersCountDoc = doc(db, "statics", "general-statics");
+
+  useEffect(() => {
+    try {
+      pageView();
+    } catch {}
+  }, []);
 
   const handleSubmitOrder = () => {
     getDoc(ordersCountDoc)
@@ -50,7 +58,6 @@ function OrderInfo() {
     navigate(ROUTES.SUCCESS);
 
     // POST ORDER HERE FILE
-    console.log(order);
   };
   return order?.permission !== ROUTES.ORDER_INFO ? (
     <Error />
@@ -70,36 +77,42 @@ function OrderInfo() {
       <OrderItem label="اسم المنتوج" text={product_name} />
       <OrderItem
         label="سعر الواحدة"
-        text={order_details.product_price}
+        text={order_details?.product_price}
         price
-        product_discount_price={order_details.product_discount_price}
+        product_discount_price={order_details?.product_discount_price}
       />
-      <OrderItem label="الكمية" text={order_details.quantity} />
-      {order_details.discount_value && (
+      <OrderItem label="الكمية" text={order_details?.quantity} />
+      {order_details?.discount && (
         <OrderItem
           label="قيمة التخفيض"
-          text={order_details.discount_value}
-          type={order_details.discount_type}
+          text={
+            order_details.discount_type === "percentage"
+              ? order_details?.discount_percentage_value
+              : order_details?.discount_price
+          }
+          type={order_details?.discount_type}
         />
       )}{" "}
       <OrderItem label="اسم الزبون" text={client_details.client_name} />
       <OrderItem label="رقم الهاتف" text={client_details.client_phone} />
       <OrderItem label="ولاية التوصيل" text={client_details.client_state} />
       <OrderItem label="بلدية التوصيل" text={client_details.client_city} />
-      <OrderItem label="تكاليف الشحن" text={order_details.shipping} price />
-      {order_details.discount && (
+      {order_details?.shipping && (
+        <OrderItem label="تكاليف الشحن" text={order_details?.shipping} price />
+      )}
+      {order_details?.discount && (
         <OrderItem
           discount
           label="الاجمالي قبل التخفيضات"
           price
-          text={order_details.price_before}
+          text={order_details?.price_before}
         />
       )}
       <OrderItem
         label="الإجمالي الكلي"
         price
         total_price
-        text={order_details.price_total}
+        text={order_details?.price_total}
       />
       <button onClick={handleSubmitOrder} className="btn">
         تأكيد الطلبية

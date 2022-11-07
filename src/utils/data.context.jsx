@@ -1,15 +1,13 @@
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { useMemo } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { init, pageView } from "react-facebook-pixel";
-import { data, homepage } from "../data/page-info.js";
 import { db } from "../firebase/firebase-config.js";
 
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
   const [order, setOrder] = useState({}); // POST API
-  const [pageInfo, setPageInfo] = useState(); // GET API
+  const [pageInfo, setPageInfo] = useState({}); // GET API
 
   const initFacebookPixel = async () => {
     let pixelIds = [];
@@ -33,22 +31,23 @@ export const DataProvider = ({ children }) => {
       updateDoc(visitsDoc, { visits: Number(staticsData.data().visits) + 1 })
     );
     const pageInfoDoc = doc(db, "page-info", "homepage");
-    getDoc(pageInfoDoc).then((doc) => {
-      const items = [];
-      // setPageInfo(doc.data());
-      setPageInfo(homepage);
-      try {
-        pageView();
-      } catch {}
-      if (items.lenght > 0) {
-        setOrder((state) => ({
-          ...state,
-          product_name: items[0]?.product?.product_name,
-        }));
-      }
-    });
+    getDoc(pageInfoDoc)
+      .then((doc) => {
+        const items = [];
+        items.push(doc.data());
+        setPageInfo(items[0]);
+        try {
+          pageView();
+        } catch {}
+        if (items.lenght > 0) {
+          setOrder((state) => ({
+            ...state,
+            product_name: items[0]?.product?.product_name,
+          }));
+        }
+      })
+      .catch(() => setPageInfo(null));
   }, []);
-  console.log(pageInfo);
 
   return (
     <DataContext.Provider value={{ order, setOrder, pageInfo }}>

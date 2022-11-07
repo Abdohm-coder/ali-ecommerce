@@ -8,10 +8,10 @@ function Feautres() {
   const { title, description, items_non_image, items_with_image, images } =
     pageInfo?.features;
 
-  const miniFeatures = items_non_image.map(({ id, title }) => {
+  const miniFeatures = items_non_image.map(({ id, title }, index) => {
     return (
       <Paper
-        key={id}
+        key={id + index}
         shadow="xs"
         radius={6}
         className="flex flex-col w-40  items-center  h-32 overflow-hidden dark:bg-footer hover:scale-105 transition-transform">
@@ -34,7 +34,9 @@ function Feautres() {
         shadow="sm"
         radius={6}
         className="flex-col flex items-center dark:bg-dark p-4">
-        <HeroCarousel images={images} withIndicators={true}></HeroCarousel>
+        {images?.length && (
+          <HeroCarousel images={images} withIndicators={true}></HeroCarousel>
+        )}
         <div className="flex flex-col  items-center w-72">
           <TbComet size={96} className="text-btn-light mt-12 mb-4" />
           <h2 className="text-center">{title}</h2>
@@ -52,11 +54,13 @@ function Feautres() {
             className="flex flex-col items-center justify-center text-center mb-8 bg-white overflow-hidden pb-4"
             key={id}>
             <div className="max-w-xs w-full h-auto object-cover mb-4 overflow-hidden ">
-              <img
-                src={image}
-                alt={title}
-                className="hover:scale-105 transition-transform scale-100"
-              />
+              {image !== "" && (
+                <img
+                  src={image}
+                  alt={title}
+                  className="hover:scale-105 transition-transform scale-100"
+                />
+              )}
             </div>
             <div className="max-w-[260px] mx-auto">
               <strong className="text-btn-dark">{title}</strong>

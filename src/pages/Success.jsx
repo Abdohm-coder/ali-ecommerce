@@ -1,11 +1,20 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import successImg from "../assets/success.svg";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
+import { pageView } from "react-facebook-pixel";
 
 function Success() {
   const { order } = useDataContext();
+
+  useEffect(() => {
+    try {
+      pageView();
+    } catch {}
+  }, []);
+
   return order?.permission !== ROUTES.SUCCESS ? (
     <Error />
   ) : (
