@@ -25,7 +25,9 @@ function Feautres() {
 
   return (
     <section className="flex flex-col items-center">
-      <HeroCarousel images={images} withIndicators={false}></HeroCarousel>
+      {images?.length && (
+        <HeroCarousel images={images} withIndicators={false}></HeroCarousel>
+      )}
       <div>
         <div className="flex flex-col items-center w-72">
           <TbComet size={96} className="text-btn-light mt-12 mb-4" />

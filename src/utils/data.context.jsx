@@ -9,7 +9,7 @@ export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
   const [order, setOrder] = useState({}); // POST API
-  const [pageInfo, setPageInfo] = useState(); // GET API
+  const [pageInfo, setPageInfo] = useState({}); // GET API
 
   const initFacebookPixel = async () => {
     let pixelIds = [];
@@ -35,7 +35,8 @@ export const DataProvider = ({ children }) => {
     const pageInfoDoc = doc(db, "page-info", "homepage");
     getDoc(pageInfoDoc).then((doc) => {
       const items = [];
-      setPageInfo(doc.data());
+      items.push(doc.data());
+      setPageInfo(items[0]);
       try {
         pageView();
       } catch {}
@@ -45,7 +46,7 @@ export const DataProvider = ({ children }) => {
           product_name: items[0]?.product?.product_name,
         }));
       }
-    });
+    }).catch(() => setPageInfo(null));
   }, []);
   console.log(pageInfo);
 

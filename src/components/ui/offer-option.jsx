@@ -21,7 +21,6 @@ export default function OfferOption({
       <div className="flex flex-col space-y-2 text text-right">
         <strong className="w-full">الكمية {quantity}</strong>
         <div className="flex items-center space-x-2 text-sm">
-          <strong className="text-discount-percent">{discount}</strong>
           <p>
             {discount ? discount_price : product_price} دج للواحدة{" "}
             {discount && (

@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
 
 function HeroCarousel({ images, withIndicators }) {
-  const slides = images.map((url) => {
+  const slides = images?.map((url) => {
     return (
       <Carousel.Slide key={url}>
         <img className="object-cover h-full w-[440px] " src={url}></img>
