@@ -16,11 +16,11 @@ export default function Footer() {
   const logo = theme === "dark" ? logos.dark_mode : logos.light_mode;
   return (
     <footer className="dark:bg-footer bg-white mt-12 p-20">
-      <section className="layout">
-        <div className="flex justify-between w-full">
+      <section className="layout ">
+        <div className="flex flex-col items-center justify-between w-full">
           <a href={ROUTES.HOME}>
             <img
-              className="object-contain w-16 max-w-full h-auto "
+              className="object-contain w-16 max-w-full h-auto mb-8 "
               src={logo}
               alt="logo"
             />

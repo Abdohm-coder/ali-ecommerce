@@ -7,41 +7,45 @@ import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
 import moment from "moment";
+import { useState } from "react";
 
 function OrderInfo() {
   const { order, setOrder } = useDataContext();
   const { product_name, client_details, order_details } = order;
   const orderDataDoc = doc(db, "orders", "ORDERS-DATA");
   let navigate = useNavigate();
+  const [ordersNumber, setOrdersNumber] = useState();
+  const ordersCountDoc = doc(db, "statics", "general-statics");
 
   const handleSubmitOrder = () => {
-    const ordersCountDoc = doc(db, "statics", "general-statics");
-    let ordersNumber;
-    getDoc(ordersCountDoc).then((res) => {
-      ordersNumber = Number(res.get("orders") + 1);
-    });
+    getDoc(ordersCountDoc)
+      .then((count) => {
+        updateDoc(orderDataDoc, {
+          orders: arrayUnion({
+            ...order,
+            createdAt: moment().unix(),
+            order_id: `ord-${Number(count.get("orders") + 1)}`,
+          }),
+        }).then((res) => {
+          setOrder((state) => ({
+            ...state,
+            permission: ROUTES.SUCCESS,
+          }));
+
+          // Count Orders
+          updateDoc(ordersCountDoc, {
+            orders: Number(count.get("orders") + 1),
+          });
+
+          // Facebook Track Purchase
+          try {
+            track("Purchase");
+          } catch {}
+        });
+      })
+      .catch((err) => console.log(err));
+
     // Push Order Data
-    updateDoc(orderDataDoc, {
-      orders: arrayUnion({
-        ...order,
-        createdAt: moment().unix(),
-        id: `ord-${ordersNumber}`,
-      }),
-    }).then((res) => {
-      setOrder((state) => ({
-        ...state,
-        permission: ROUTES.SUCCESS,
-      }));
-
-      // Count Orders
-
-      updateDoc(ordersCountDoc, { orders: ordersNumber });
-
-      // Facebook Track Purchase
-      try {
-        track("Purchase");
-      } catch {}
-    });
 
     navigate(ROUTES.SUCCESS);
 

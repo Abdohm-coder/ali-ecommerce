@@ -16,13 +16,12 @@ function Success() {
           alt="success img"
           className="object-cover max-w-[280px] mb-8 h-auto"
         />
-        <strong className="max-w-[260px] mx-auto text-lg text-purple-500 opacity-70">
+        {/* <strong className="max-w-[260px] mx-auto text-lg text-purple-500 opacity-70">
           شكرا لكم لتعاملكم معنا 💜
-        </strong>
+        </strong> */}
         <h1 className="text-4xl text font-bold mb-2">لقد تم تأكيد طلبيتكم</h1>
         <p className="max-w-[260px] mx-auto mb-8 text-light">
-          سيتم توصيل طلبيتكم عبر أحد شركات التوصيل في مدة لا تتجاوز أربعة أيام
-          عمل.
+          سيتم توصيل طلبيتك في أقربب وقت سعيدون بالتعامل معك 💜
         </p>
         <Link to={ROUTES.HOME}>
           <button className="btn">العودة للرئيسية</button>

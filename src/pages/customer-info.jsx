@@ -92,9 +92,9 @@ function CustomerInfo() {
     <section className="pt-8 layout">
       <HeroCarousel images={images} withIndicators={false} height={"h-24"} />
       <div className="mx-auto max-w-[250px] text-center">
-        <h1 className="text text-xl font-black mb-2">الآن أدخل معلوماتك</h1>
+        <h1 className="text text-xl font-black mb-2">أدخل معلوماتك بعناية</h1>
         <p className="text-light font-semibold mb-6">
-          املؤوا الحقول أسفله ثم اضغطوا على زر المواصلة لاتمام عملية الطلب
+          إملأ الحقول أسفله ثم اضغط على الزر لاتمام عملية الطلب
         </p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -146,7 +146,7 @@ function CustomerInfo() {
             )}
           </div>
           <button type="submit" className="btn">
-            مواصلة الطلب
+            تأكيد الطلب
           </button>
         </Paper>
       </form>

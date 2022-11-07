@@ -1,18 +1,20 @@
 import { Paper, Table } from "@mantine/core";
+import moment from "moment/moment";
 import React from "react";
 import { useDataContext } from "../../utils/data.context";
 
 function OrdersTable({ orders }) {
   const rows = orders.map(
-    ({ client_details, order_details, order_id, product_name }) => (
+    ({ client_details, order_details, order_id, product_name, createdAt }) => (
       <tr key={order_id} className="text-right">
         <td>{order_id}</td>
         <td>{client_details?.client_name}</td>
         <td>{product_name}</td>
         <td>{`${client_details?.client_state}, ${client_details?.client_city}`}</td>
         <td>{client_details?.client_phone}</td>
+        <td style={{ direction: "ltr" }}>{moment.unix(createdAt).from()}</td>
         <td>{order_details?.quantity}</td>
-        <td>{order_details?.product_price}</td>
+        <td>{`${order_details?.product_price} دج`}</td>
         <td>{`${order_details?.discount_price} دج`}</td>
         <td>
           {order_details?.discount
@@ -39,6 +41,7 @@ function OrdersTable({ orders }) {
             <th style={{ textAlign: "right" }}>إسم المنتج</th>
             <th style={{ textAlign: "right" }}>العنوان</th>
             <th style={{ textAlign: "right" }}>رقم الهاتف</th>
+            <th style={{ textAlign: "right" }}>وقت الطلب</th>
             <th style={{ textAlign: "right" }}>الكمية</th>
             <th style={{ textAlign: "right" }}>السعر</th>
             <th style={{ textAlign: "right" }}>السعر بعد التخفيض</th>

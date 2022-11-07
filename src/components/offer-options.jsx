@@ -24,7 +24,7 @@ export default function OfferOptions() {
     <section className="w-full">
       <div className="max-w-[250px] mx-auto text-center mb-6">
         <p className="text-light">
-          اختر أحد عروض البيع المتوفرة و اضغط على زر المواصلة
+          اختر العرض المناسب لك ثم اضغط على الزر للمواصلة
         </p>
       </div>
       <Paper
@@ -41,17 +41,17 @@ export default function OfferOptions() {
         ))}
         <Link to={ROUTES.CUSTOMER_INFO}>
           <button onClick={handleSubmitOffer} className="btn">
-            مواصلة الطلب
+            أطلب الأن
           </button>
         </Link>
         {offer_options[activeOffer].discount && (
           <div className="w-full flex items-center justify-between">
             <div className="flex items-center text-sm">
               <strong className="dark:text-white pl-2 text-dark">
-                قيمة التخفيض
+                رائع لقد وفرت
               </strong>
               <strong className="text-discount-value">
-                دج{offer_options[activeOffer]?.discount_value || 0}
+                {offer_options[activeOffer]?.discount_value || 0} دج
               </strong>
             </div>
             {/* <Badge text={data.offer_options[activeOffer].badge} /> */}

@@ -60,11 +60,11 @@ p {
 }
 
 .hero .mantine-Carousel-control {
-  @apply text-dark bg-white;
+  @apply dark:text-dark text-dark bg-white;
 }
 
 .mantine-Carousel-control {
-  @apply dark:text-white dark:text-dark;
+  @apply dark:text-white text-dark;
 }
 
 .mantine-Carousel-indicator {
