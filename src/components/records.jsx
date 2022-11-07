@@ -1,3 +1,4 @@
+import { Paper } from "@mantine/core";
 import { useDataContext } from "../utils/data.context";
 
 export default function Records() {
@@ -11,19 +12,22 @@ export default function Records() {
             <div
               className="flex flex-col items-center !text-dark dark:!text-white"
               key={id}>
-              <div
-                className="icon"
-                dangerouslySetInnerHTML={{ __html: icon }}
-              />
-              <strong className="text-center text-xl text-pink-500">
-                {span}
-              </strong>
-              <strong className="text-center text-lg">{text}</strong>
+              <Paper
+                shadow={"md"}
+                className=" mb-3 rounded-full w-24 h-24 flex flex-col justify-center items-center dark:bg-dark bg-white ">
+                <div
+                  className="icon text-pink-800 "
+                  dangerouslySetInnerHTML={{ __html: icon }}
+                />
+                <strong className="text-center text-xl text-pink-500">
+                  {span}
+                </strong>
+              </Paper>
+              <strong className="text-center text-md">{text}</strong>
             </div>
           ))}
         </div>
       </div>
-      <hr className="opacity-20" />
     </section>
   );
 }

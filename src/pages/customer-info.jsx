@@ -13,6 +13,7 @@ import qualityImg from "../assets/quality.svg";
 import transferImg from "../assets/transfer-money.svg";
 import { useDataContext } from "../utils/data.context";
 import Error from "./error";
+import HeroCarousel from "../components/carousel";
 
 const featured_icons = [
   { icon: paymentImg, text: "الدفع عند الاستلام" },
@@ -43,7 +44,8 @@ function CustomerInfo() {
     resolver: yupResolver(orderFormShema),
   });
 
-  const { order, setOrder } = useDataContext();
+  const { order, setOrder, pageInfo } = useDataContext();
+  const images = pageInfo?.hero?.images;
   let navigate = useNavigate();
 
   const onSubmit = async (values) => {
@@ -87,6 +89,7 @@ function CustomerInfo() {
     <Error />
   ) : (
     <section className="pt-8 layout">
+      <HeroCarousel images={images} withIndicators={false} height={"h-24"} />
       <div className="mx-auto max-w-[250px] text-center">
         <h1 className="text text-xl font-black mb-2">الآن أدخل معلوماتك</h1>
         <p className="text-light font-semibold mb-6">

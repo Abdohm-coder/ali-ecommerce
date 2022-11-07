@@ -1,16 +1,31 @@
+import { Carousel } from "@mantine/carousel";
 import { FaRegUser } from "react-icons/fa";
 import { useDataContext } from "../utils/data.context";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
+import { Paper } from "@mantine/core";
 
 export default function Feedback() {
   const { pageInfo } = useDataContext();
   const { title, reviews } = pageInfo?.feedbacks;
+  const autoplay = useRef(Autoplay({ delay: 2000 }));
   return (
     <section className="flex flex-col w-full py-3">
+      <hr className="opacity-20 mb-8" />
       <h2 className=" mb-8">{title}</h2>
-      <div className="grid grid-cols-1 gap-8">
+      <Carousel
+        sx={{ maxWidth: 350, flex: 1, height: "100%" }}
+        plugins={[autoplay.current]}
+        withControls={true}
+        loop
+        mx="auto"
+        slideGap="md"
+        align="center">
         {reviews.map(({ id, name, feedback, avatar }, index) => (
-          <>
-            <div className="flex justify-end w-full">
+          <Carousel.Slide>
+            <Paper
+              shadow={"xs"}
+              className="flex justify-end w-full dark:bg-dark  bg-white p-4 border-2">
               <span>
                 {avatar ? (
                   <img
@@ -28,11 +43,11 @@ export default function Feedback() {
                 <strong className="text text-lg mb-2 w-full">{name}</strong>
                 <p className="text-light">{feedback}</p>
               </div>
-            </div>
-            {index !== reviews.length - 1 && <hr className="opacity-30" />}
-          </>
+            </Paper>
+            {/* {index !== reviews.length - 1 && <hr className="opacity-30" />} */}
+          </Carousel.Slide>
         ))}
-      </div>
+      </Carousel>
     </section>
   );
 }

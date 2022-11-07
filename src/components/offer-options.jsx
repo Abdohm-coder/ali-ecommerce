@@ -4,6 +4,7 @@ import Badge from "./ui/badge";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import OfferOption from "./ui/offer-option";
+import { Paper } from "@mantine/core";
 
 export default function OfferOptions() {
   const { order, setOrder, pageInfo } = useDataContext();
@@ -26,7 +27,9 @@ export default function OfferOptions() {
           اختر أحد عروض البيع المتوفرة و اضغط على زر المواصلة
         </p>
       </div>
-      <div className="flex flex-col space-y-3 dark:bg-footer bg-white rounded-xl p-3">
+      <Paper
+        shadow="lg"
+        className="flex flex-col space-y-3 dark:bg-dark bg-white rounded-xl p-3">
         {offer_options.map((option, index) => (
           <OfferOption
             key={option.id}
@@ -54,7 +57,7 @@ export default function OfferOptions() {
             {/* <Badge text={data.offer_options[activeOffer].badge} /> */}
           </div>
         )}
-      </div>
+      </Paper>
     </section>
   );
 }

@@ -55,6 +55,18 @@ p {
   direction: ltr !important;
 }
 
+.mantine-Carousel-controls {
+  flex-direction: row-reverse;
+}
+
+.hero .mantine-Carousel-control {
+  @apply text-dark bg-white;
+}
+
+.mantine-Carousel-control {
+  @apply dark:text-white dark:text-dark;
+}
+
 .mantine-Carousel-indicator {
   @apply bg-white;
 }

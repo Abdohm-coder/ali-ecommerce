@@ -16,7 +16,7 @@ function Home() {
   return (
     <section className="layout">
       <div className="flex flex-col space-y-8">
-        <HeroCarousel images={images} withIndicators={true} />
+        <HeroCarousel images={images} withIndicators={true} isHero={true} />
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-4xl font-black dark:text-white mb-2 text-dark">
             {title}
@@ -51,8 +51,8 @@ function Home() {
         </div>
         <OfferOptions />
         <ReadMore />
-        <Feautres />
         <Records />
+        <Feautres />
         <Feedback />
       </div>
     </section>

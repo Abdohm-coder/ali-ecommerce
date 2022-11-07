@@ -1,3 +1,4 @@
+import { Group, Paper } from "@mantine/core";
 import Badge from "./badge";
 
 export default function OfferOption({
@@ -13,13 +14,21 @@ export default function OfferOption({
   active,
 }) {
   return (
-    <div
+    <Paper
+      shadow={"xs"}
       onClick={() => changeOffer(index)}
-      className={`rounded-xl flex items-center justify-between py-4 ${
-        active === index ? "ring-4" : "ring-0"
-      } ring-btn-dark dark:ring-btn-light px-5 cursor-pointer dark:bg-dark bg-white`}>
-      <div className="flex flex-col space-y-2 text text-right">
-        <strong className="w-full">الكمية {quantity}</strong>
+      className={`rounded-xl flex items-center justify-between py-4  ${
+        active === index ? "outline-4 outline" : ""
+      } outline-btn-dark dark:outline-btn-light px-5 cursor-pointer dark:bg-footer bg-white`}>
+      <div className="flex flex-col space-y-2 text text-right w-full">
+        <Group position="apart">
+          <strong>الكمية {quantity}</strong>
+          <span
+            className={`w-5 h-5 rounded-full border-btn-dark border relative ${
+              active === index ? "bg-btn-dark offer-active" : ""
+            }`}
+          />
+        </Group>
         <div className="flex items-center space-x-2 text-sm">
           <strong className="text-discount-percent">{discount}</strong>
           <p>
@@ -34,11 +43,6 @@ export default function OfferOption({
         </div>
         <Badge text={badge} />
       </div>
-      <span
-        className={`w-5 h-5 rounded-full border-btn-dark border relative ${
-          active === index ? "bg-btn-dark offer-active" : ""
-        }`}
-      />
-    </div>
+    </Paper>
   );
 }
