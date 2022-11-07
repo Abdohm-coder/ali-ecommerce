@@ -50,8 +50,8 @@ function Home() {
           </div>
         </div>
         <OfferOptions />
-        <ReadMore />
         <Records />
+        <ReadMore />
         <Feautres />
         <Feedback />
       </div>

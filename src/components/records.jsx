@@ -6,7 +6,7 @@ export default function Records() {
   const records = pageInfo?.records;
   return (
     <section>
-      <div className="flex w-full mb-8">
+      <div className="flex w-full my-8">
         <div className="grid grid-cols-3 w-full">
           {records?.map(({ id, icon, text, span }) => (
             <div
@@ -14,7 +14,7 @@ export default function Records() {
               key={id}>
               <Paper
                 shadow={"md"}
-                className=" mb-3 rounded-full w-24 h-24 flex flex-col justify-center items-center dark:bg-dark bg-white ">
+                className=" mb-3 rounded-full w-24 h-24 flex flex-col justify-center items-center dark:bg-dark bg-white hover:dark:bg-btn-dark/30 hover:bg-btn-light/10 cursor-default transition-colors">
                 <div
                   className="icon text-pink-800 "
                   dangerouslySetInnerHTML={{ __html: icon }}

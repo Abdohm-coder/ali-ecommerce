@@ -1,5 +1,5 @@
 import HeroCarousel from "./carousel";
-import { TbAward, TbComet } from "react-icons/tb";
+import { TbAward, TbComet, TbStar } from "react-icons/tb";
 import { Paper } from "@mantine/core";
 import { useDataContext } from "../utils/data.context";
 
@@ -16,7 +16,10 @@ function Feautres() {
         radius={6}
         className="flex flex-col w-40  items-center  h-32 overflow-hidden dark:bg-footer hover:scale-105 transition-transform">
         <div className="text-btn h-16 w-full grid place-items-center dark:bg-btn-dark bg-btn-light">
-          <TbAward size={32} className="align-middle text-footer" />
+          <TbStar
+            size={32}
+            className="align-middle text-yellow-400 fill-yellow-400"
+          />
         </div>
         <div className="flex-1 text-center p-2 ">
           <strong className=" text-light">{title}</strong>
