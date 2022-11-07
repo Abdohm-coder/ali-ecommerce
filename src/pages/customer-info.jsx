@@ -13,6 +13,7 @@ import qualityImg from "../assets/quality.svg";
 import transferImg from "../assets/transfer-money.svg";
 import { useDataContext } from "../utils/data.context";
 import Error from "./error";
+import { pageView } from "react-facebook-pixel";
 
 const featured_icons = [
   { icon: paymentImg, text: "الدفع عند الاستلام" },
@@ -42,6 +43,12 @@ function CustomerInfo() {
   } = useForm({
     resolver: yupResolver(orderFormShema),
   });
+
+  useEffect(() => {
+    try {
+      pageView();
+    } catch {}
+  }, []);
 
   const { order, setOrder } = useDataContext();
   let navigate = useNavigate();

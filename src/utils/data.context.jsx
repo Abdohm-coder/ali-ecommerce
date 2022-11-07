@@ -1,8 +1,6 @@
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { useMemo } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { init, pageView } from "react-facebook-pixel";
-import { data } from "../data/page-info.js";
 import { db } from "../firebase/firebase-config.js";
 
 export const DataContext = createContext();
