@@ -21,7 +21,7 @@ function Main() {
       const items = [];
       items.push(doc.data());
       setOrders(
-        items[0]?.orders.sort((prev, next) => prev?.createdAt < next?.createdAt)
+        items[0]?.orders.sort((prev, next) => next?.createdAt - prev?.createdAt)
       );
     });
   }, []);
@@ -31,7 +31,9 @@ function Main() {
       const items = [];
       items.push(doc.data());
       setOrders(
-        items[0]?.orders.sort((prev, next) => prev?.createdAt < next?.createdAt)
+        [...items[0]?.orders].sort(
+          (prev, next) => next?.createdAt - prev?.createdAt
+        )
       );
     });
   }, []);
