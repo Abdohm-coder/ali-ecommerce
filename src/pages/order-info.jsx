@@ -1,10 +1,4 @@
-import {
-  arrayUnion,
-  doc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-} from "firebase/firestore";
+import { arrayUnion, doc, updateDoc, getDoc } from "firebase/firestore";
 import { track } from "react-facebook-pixel";
 import { useNavigate } from "react-router-dom";
 import OrderItem from "../components/ui/order-item";
@@ -12,6 +6,7 @@ import { db } from "../firebase/firebase-config";
 import { useDataContext } from "../utils/data.context";
 import { ROUTES } from "../utils/routes";
 import Error from "./error";
+import moment from "moment";
 
 function OrderInfo() {
   const { order, setOrder } = useDataContext();
@@ -21,10 +16,17 @@ function OrderInfo() {
 
   const handleSubmitOrder = () => {
     const ordersCountDoc = doc(db, "statics", "general-statics");
-
+    let ordersNumber;
+    getDoc(ordersCountDoc).then((res) => {
+      ordersNumber = Number(res.get("orders") + 1);
+    });
     // Push Order Data
     updateDoc(orderDataDoc, {
-      orders: arrayUnion({ ...order, createdAt: Date() }),
+      orders: arrayUnion({
+        ...order,
+        createdAt: moment().unix(),
+        id: `ord-${ordersNumber}`,
+      }),
     }).then((res) => {
       setOrder((state) => ({
         ...state,
@@ -32,9 +34,8 @@ function OrderInfo() {
       }));
 
       // Count Orders
-      getDoc(ordersCountDoc).then((res) => {
-        updateDoc(ordersCountDoc, { orders: Number(res.get("orders")) + 1 });
-      });
+
+      updateDoc(ordersCountDoc, { orders: ordersNumber });
 
       // Facebook Track Purchase
       try {
