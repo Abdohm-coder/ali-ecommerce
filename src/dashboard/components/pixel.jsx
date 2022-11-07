@@ -26,7 +26,6 @@ export default function Pixel() {
             variant="filled"
             onClick={() =>
               setPixels((pixel) => {
-                console.log(pixel.filter((p, i) => i !== pixel.length - 1));
                 return pixel.filter((p, i) => i !== pixel.length - 1);
               })
             }
@@ -37,6 +36,7 @@ export default function Pixel() {
         <div className="grid place-items-center h-full flex-1 ">
           {pixels.map((pixel, index) => (
             <TextInput
+              key={uuidv4()}
               radius={6}
               label="Id"
               mb="sm"

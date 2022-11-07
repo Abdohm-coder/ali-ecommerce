@@ -2,9 +2,9 @@ import { Paper, Table } from "@mantine/core";
 import React from "react";
 function OrdersTable({ orders }) {
   const rows = orders?.map(
-    ({ client_details, order_details, order_id, product_name }) => (
-      <tr key={order_id} className="text-right">
-        <td>{order_id}</td>
+    ({ client_details, order_details, product_name }) => (
+      <tr key={order_details?.id} className="text-right">
+        <td>{order_details?.id}</td>
         <td>{client_details?.client_name}</td>
         <td>{product_name}</td>
         <td>{`${client_details?.client_state}, ${client_details?.client_city}`}</td>
@@ -12,7 +12,7 @@ function OrdersTable({ orders }) {
         <td>{client_details?.client_phone}</td>
         <td>{order_details?.quantity}</td>
         <td>{order_details?.product_price}</td>
-        <td>{`${order_details?.discount_price} دج`}</td>
+        <td>{order_details?.discount ?`${order_details?.discount_price} دج` : "دون تخفيض"}</td>
         <td>
           {order_details?.discount
             ? `${order_details?.discount_type === "percentage" ? "%" : "دج "} ${
@@ -49,8 +49,8 @@ function OrdersTable({ orders }) {
           </tr>
         </thead>
         {orders?.length === 0 ? (
-          <tbody className="text-center relative h-7 w-full">
-            <span className="absolute left-1/2">لا توجد طلبات</span>
+          <tbody className="text-center relative h-14 w-full">
+            <tr className="absolute left-1/2"><td>لا توجد طلبات</td></tr>
           </tbody>
         ) : (
           <tbody>{rows}</tbody>

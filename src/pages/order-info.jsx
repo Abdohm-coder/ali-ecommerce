@@ -45,7 +45,6 @@ function OrderInfo() {
     navigate(ROUTES.SUCCESS);
 
     // POST ORDER HERE FILE
-    console.log(order);
   };
   return order?.permission !== ROUTES.ORDER_INFO ? (
     <Error />
@@ -70,7 +69,7 @@ function OrderInfo() {
         product_discount_price={order_details?.product_discount_price}
       />
       <OrderItem label="الكمية" text={order_details?.quantity} />
-      {order_details?.discount_value && (
+      {order_details?.discount && (
         <OrderItem
           label="قيمة التخفيض"
           text={
@@ -85,7 +84,7 @@ function OrderInfo() {
       <OrderItem label="رقم الهاتف" text={client_details.client_phone} />
       <OrderItem label="ولاية التوصيل" text={client_details.client_state} />
       <OrderItem label="بلدية التوصيل" text={client_details.client_city} />
-      <OrderItem label="تكاليف الشحن" text={order_details?.shipping} price />
+      {order_details?.shipping && <OrderItem label="تكاليف الشحن" text={order_details?.shipping} price />}
       {order_details?.discount && (
         <OrderItem
           discount

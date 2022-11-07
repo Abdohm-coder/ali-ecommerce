@@ -10,27 +10,26 @@ export default function OfferOptions() {
   const { order, setOrder, pageInfo } = useDataContext();
   // if (!pageInfo?.product || Object.keys(pageInfo?.product).length === 0) return;
   const { offer_options, product_name, product_price } = pageInfo?.product;
-  const offers = [
-    {
-      shipping: null,
-      quantity: 1,
-      product_price,
-      discount: false,
-      discount_type: "",
-      discount_value: 0,
-      product_discount_price: 0,
-      price_before: 0,
-      price_total: product_price,
-    },
-  ];
+  const defaultOffer = {
+    shipping: null,
+    quantity: 1,
+    product_price,
+    discount: false,
+    discount_type: "",
+    discount_value: 0,
+    product_discount_price: 0,
+    price_before: 0,
+    price_total: product_price,
+    id: uuidv4(),
+  };
 
   const [activeOffer, setOffer] = useState(1);
 
   const handleSubmitOffer = () => {
     setOrder(() => ({
       product_name,
-      order_id: uuidv4(),
-      order_details: offer_options[activeOffer],
+      order_details:
+        activeOffer === 0 ? defaultOffer : offer_options[activeOffer - 1],
       permission: ROUTES.CUSTOMER_INFO,
     }));
   };

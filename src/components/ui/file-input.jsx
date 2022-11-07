@@ -12,7 +12,7 @@ export default function FileInput({
   setValue,
   label,
   text,
-  multiple,
+  multiple = false,
   onChange = null,
   getValues = () => {},
   simple = false,

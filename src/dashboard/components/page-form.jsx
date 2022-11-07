@@ -16,7 +16,6 @@ import {
   getDownloadURL,
   listAll,
   ref,
-  uploadBytes,
   uploadBytesResumable,
 } from "firebase/storage";
 import { useEffect } from "react";
@@ -26,7 +25,6 @@ import { Button } from "@mantine/core";
 const pageschema = yup.object().shape({
   hero: yup.object().shape({
     title: yup.string().required("العنوان الرئيسي مطلوب"),
-    // images: yup.array().of(yup.object()),
   }),
   features: yup.object().shape({
     has_features: yup.boolean().required("هذا الحقل مطلوب"),
@@ -47,12 +45,18 @@ const emptyItemsImage = {
   id: uuidv4(),
   title: "",
   description: "",
-  image: {},
+  image: "",
 };
 
 const emptyItem = {
   id: uuidv4(),
   title: "",
+};
+
+const emptyReview = {
+  id: uuidv4(),
+  name: "",
+  feedback: "",
 };
 
 const defaultValues = {
@@ -78,37 +82,6 @@ const defaultValues = {
 
 export default function PageInfoForm({ initialData }) {
   const pageInfoDataDoc = doc(db, "page-info", "homepage");
-  const [reviews, setReviews] = useState(
-    initialData?.feedbacks?.reviews?.length > 0
-      ? initialData?.feedbacks?.reviews
-      : [
-          {
-            id: uuidv4(),
-            name: "",
-            feedback: "",
-          },
-          {
-            id: uuidv4(),
-            name: "",
-            feedback: "",
-          },
-          {
-            id: uuidv4(),
-            name: "",
-            feedback: "",
-          },
-          {
-            id: uuidv4(),
-            name: "",
-            feedback: "",
-          },
-          {
-            id: uuidv4(),
-            name: "",
-            feedback: "",
-          },
-        ]
-  );
   const [hasFeedbacks, setHasFeedbacks] = useState(
     (initialData?.feedbacks?.has_feedbacks !== undefined &&
       initialData?.feedbacks?.has_feedbacks) ||
@@ -160,6 +133,15 @@ export default function PageInfoForm({ initialData }) {
     name: "features.items_non_image",
   });
 
+  const {
+    fields: reviews,
+    append: appendReviews,
+    remove: removeReviews,
+  } = useFieldArray({
+    control,
+    name: "feedbacks.reviews",
+  });
+
   useEffect(() => {
     // HERO Delete unnicessries images
     const hero_deleteRef = ref(storage, "hero/");
@@ -198,13 +180,14 @@ export default function PageInfoForm({ initialData }) {
       res.items.forEach((item) => {
         getDownloadURL(item)
           .then((url) => {
-            items_image.forEach(({ image }) => {
-              if (!image.includes(url)) {
-                deleteObject(ref(storage, item.fullPath))
-                  .then()
-                  .catch(() => toast.warn("أوبس، هناك خطأ"));
-              }
-            });
+            const delete_url = items_image.filter(({ image }) =>
+              image.includes(url)
+            );
+            if (delete_url.length === 0) {
+              deleteObject(ref(storage, item.fullPath))
+                .then()
+                .catch(() => toast.warn("أوبس، هناك خطأ"));
+            }
           })
           .catch(() => toast.warn("أوبس، هناك خطأ"));
       });
@@ -219,7 +202,7 @@ export default function PageInfoForm({ initialData }) {
     const filter_footer = values?.footer?.filter(
       ({ label, text }) => label !== "" || text !== ""
     );
-    const filter_reviews = reviews.filter(
+    const filter_reviews = values?.feedbacks?.reviews?.filter(
       ({ name, feedback }) => name !== "" || feedback !== ""
     );
     const filter_items = values?.features?.items_non_image?.filter(
@@ -235,7 +218,7 @@ export default function PageInfoForm({ initialData }) {
     const uploadImage = () => {
       // Upload Hero Images
       let hero_items = [];
-      values?.hero?.imagesvalues?.hero?.images
+      values?.hero?.images
         .filter((image) => typeof image !== "string")
         .forEach((imageUpload) => {
           const imageRef = ref(storage, `hero/${imageUpload.name + uuidv4()}`);
@@ -289,6 +272,26 @@ export default function PageInfoForm({ initialData }) {
           );
         });
       // Upload Features Items with Images
+      if (
+        hasFeatures &&
+        filter_items_image.filter(({ image }) => typeof image === "string")
+          .length === filter_items_image.length
+      ) {
+        filter_items_image.forEach(
+          ({ id, title, description, image }, index) => {
+            const input = {
+              image,
+              id,
+              title,
+              description,
+            };
+            updateDoc(pageInfoDataDoc, {
+              "features.items_with_image":
+                index === 0 ? [input] : arrayUnion(input),
+            }).then(() => {});
+          }
+        );
+      }
       hasFeatures
         ? filter_items_image
             .filter(({ image }) => typeof image !== "string")
@@ -306,16 +309,22 @@ export default function PageInfoForm({ initialData }) {
                 () => {
                   // download url
                   getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    const input = {
+                      image: url,
+                      id: filter_items_image[index].id,
+                      title: filter_items_image[index].title,
+                      description: filter_items_image[index].description,
+                    };
                     updateDoc(pageInfoDataDoc, {
-                      "features.items_with_image": arrayUnion({
-                        image: url,
-                        id: filter_items_image[index].id,
-                        title: filter_items_image[index].title,
-                        description: filter_items_image[index].description,
-                      }),
-                    })
-                      .then(() => {})
-                      .catch((err) => toast.warn("أوبس، هناك خطأ"));
+                      "features.items_with_image":
+                        filter_items_image.filter(
+                          ({ image }) => typeof image !== "string"
+                        ).length === filter_items_image.length
+                          ? index === 0
+                            ? [input]
+                            : arrayUnion(input)
+                          : arrayUnion(input),
+                    }).then(() => {});
                   });
                 }
               );
@@ -489,7 +498,7 @@ export default function PageInfoForm({ initialData }) {
                   <Button
                     variant="filled"
                     onClick={() =>
-                      items_image.length > 2 ? {} : appendItems(emptyItemsImage)
+                      items_image.length > 1 ? {} : appendItems(emptyItemsImage)
                     }
                     className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
                     إضافة مميز
@@ -569,6 +578,20 @@ export default function PageInfoForm({ initialData }) {
               onChange={(e) => setHasFeedbacks(e === "true")}
             />
           </div>
+          <div className="w-full flex flex-wrap justify-end">
+            <Button
+              variant="filled"
+              onClick={() => appendReviews(emptyReview)}
+              className="hover:bg-btn-dark bg-btn-dark/90 ml-3">
+              إضافة رأي
+            </Button>
+            <Button
+              variant="filled"
+              onClick={() => removeReviews(reviews.length - 1)}
+              className="hover:bg-red-500 bg-red-600">
+              حذف رأي
+            </Button>
+          </div>
           {hasFeedbacks && (
             <>
               <div className="grid w-full sm:grid-cols-2 my-6 gap-6">
@@ -595,37 +618,17 @@ export default function PageInfoForm({ initialData }) {
               <h2 className="font-black text-base my-6 text-btn-dark">
                 الآراء
               </h2>
-              {reviews?.map(({ name, feedback }, index) => (
-                <div
-                  key={`الرأي ${index}`}
-                  className="grid w-full sm:grid-cols-2 my-6 gap-6">
+              {reviews?.map(({ id, name, feedback }, index) => (
+                <div key={id} className="grid w-full sm:grid-cols-2 my-6 gap-6">
                   <Input
-                    value={name}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      setReviews((t) =>
-                        t.map(({ name, ...rest }, i) =>
-                          i === index
-                            ? { name: text, ...rest }
-                            : { name, ...rest }
-                        )
-                      );
-                    }}
+                    {...register(`feedbacks.reviews.${index}.name`)}
+                    error={errors?.feedbacks?.reviews?.[index]?.name}
                     placeholder={`أدخل الاسم ${index + 1}`}
                     label={`الاسم ${index + 1}`}
                   />
                   <TextArea
-                    value={feedback}
-                    onChange={(e) => {
-                      const text = e.target.value;
-                      setReviews((t) =>
-                        t.map(({ feedback, ...rest }, i) =>
-                          i === index
-                            ? { feedback: text, ...rest }
-                            : { feedback, ...rest }
-                        )
-                      );
-                    }}
+                    {...register(`feedbacks.reviews.${index}.feedback`)}
+                    error={errors?.feedbacks?.reviews?.[index]?.feedback}
                     placeholder={`أدخل الرأي`}
                     label={`الرأي`}
                   />

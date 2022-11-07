@@ -161,7 +161,6 @@ function ProductForm({ setOpened, initialData }) {
       ),
     };
 
-    console.log(input);
 
     // POST input variable here to "orders" collection
     updateDoc(pageInfoDataDoc, {

@@ -48,7 +48,6 @@ export const DataProvider = ({ children }) => {
       }
     }).catch(() => setPageInfo(null));
   }, []);
-  console.log(pageInfo);
 
   return (
     <DataContext.Provider value={{ order, setOrder, pageInfo }}>

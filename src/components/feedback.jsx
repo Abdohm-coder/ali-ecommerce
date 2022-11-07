@@ -10,7 +10,7 @@ export default function Feedback() {
       <div className="grid grid-cols-1 gap-8">
         {reviews.map(({ id, name, feedback, avatar }, index) => (
           <div key={id}>
-            <div  className="flex justify-end w-full">
+            <div  className="flex w-full">
               <span>
                 {avatar ? (
                   <img

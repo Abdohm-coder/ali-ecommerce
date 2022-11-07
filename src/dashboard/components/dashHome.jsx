@@ -23,7 +23,6 @@ function Main() {
       setOrders(items[0]?.orders);
     });
   }, []);
-  console.log(orders)
 
   // WRAP PRODUCT DATA
   const { pageInfo } = useDataContext();

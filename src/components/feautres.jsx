@@ -8,10 +8,10 @@ function Feautres() {
   const { title, description, items_non_image, items_with_image, images } =
     pageInfo?.features;
 
-  const miniFeatures = items_non_image.map(({ id, title }) => {
+  const miniFeatures = items_non_image.map(({ id, title }, index) => {
     return (
       <Paper
-        key={id}
+        key={id + index}
         shadow="xs"
         radius={6}
         className="flex items-center h-16 overflow-hidden dark:bg-footer">
@@ -44,11 +44,13 @@ function Feautres() {
           <div
             className="flex flex-col items-center justify-center text-center mb-8"
             key={id}>
-            <img
-              src={image}
-              alt={title}
-              className="max-w-xs w-full h-auto object-cover mb-6 rounded-xl"
-            />
+            {image !== "" && (
+              <img
+                src={image}
+                alt={title}
+                className="max-w-xs w-full h-auto object-cover mb-6 rounded-xl"
+              />
+            )}
             <div className="max-w-[260px] mx-auto">
               <strong className="text-btn-dark">{title}</strong>
               <p className="text-light">{description}</p>
