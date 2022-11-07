@@ -34,7 +34,7 @@ function DashSidebar({ logOut }) {
           </Link>
         </div>
         <div className="grid items-center w-full h-24 justify-center">
-          <Link to="/">
+          <Link to={ROUTES.HOME}>
             <ActionIcon
               onClick={logOut}
               size="lg"
