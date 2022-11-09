@@ -24,7 +24,7 @@ export default function OfferOptions() {
     id: uuidv4(),
   };
 
-  const [activeOffer, setOffer] = useState(1);
+  const [activeOffer, setOffer] = useState(0);
 
   const handleSubmitOffer = () => {
     setOrder(() => ({
@@ -45,16 +45,23 @@ export default function OfferOptions() {
       <Paper
         shadow="lg"
         className="flex flex-col space-y-3 dark:bg-dark bg-white rounded-xl p-3">
-        {offer_options.map((option, index) => (
+        <OfferOption
+          key="deffault offer"
+          product_price={product_price}
+          badge="العرض العادي"
+          discount={false}
+          quantity={1}
+          active={activeOffer}
+          changeOffer={setOffer}
+          index={0}
+        />
+        {offer_options.map(({id, ...rest}, index) => (
           <OfferOption
-            key="deffault offer"
-            product_price={product_price}
-            badge="العرض العادي"
-            discount={false}
-            quantity={1}
+            key={id}
+            {...rest}
             active={activeOffer}
             changeOffer={setOffer}
-            index={0}
+            index={index + 1}
           />
         ))}
         <Link to={ROUTES.CUSTOMER_INFO}>
@@ -69,7 +76,7 @@ export default function OfferOptions() {
                 رائع لقد وفرت
               </strong>
               <strong className="text-discount-value">
-                {offer_options[activeOffer]?.discount_value || 0} دج
+                {offer_options[activeOffer - 1]?.discount_value || 0} دج
               </strong>
             </div>
             {/* <Badge text={data.offer_options[activeOffer].badge} /> */}

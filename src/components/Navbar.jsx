@@ -27,7 +27,7 @@ export default function Navbar() {
         <nav className="flex items-center overflow-hidden h-20">
           <section className="layout">
             <div className="flex items-center justify-between w-full h-10 px-1">
-              <Link to={ROUTES.HOME}>
+              {/* <Link to={ROUTES.HOME}>
                 <span className="overflow-hidden relative max-h-10">
                   <img
                     className="object-contain w-36 max-w-full"
@@ -35,7 +35,7 @@ export default function Navbar() {
                     src={logo}
                   />
                 </span>
-              </Link>
+              </Link> */}
               <button
                 onClick={() =>
                   setTheme((theme) => (theme === "dark" ? "light" : "dark"))

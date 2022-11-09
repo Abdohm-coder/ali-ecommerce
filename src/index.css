@@ -51,9 +51,6 @@ p {
 
 /* ----------------------------- Carousel style ----------------------------- */
 
-.mantine-Carousel-container {
-  direction: ltr !important;
-}
 
 .mantine-Carousel-controls {
   flex-direction: row-reverse;
