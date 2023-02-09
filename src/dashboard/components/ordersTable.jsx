@@ -1,6 +1,5 @@
 import { Paper, Table } from "@mantine/core";
 import moment from "moment/moment";
-import React from "react";
 function OrdersTable({ orders }) {
   const rows = orders?.map(
     ({ client_details, order_details, product_name, order_id, createdAt }) => (

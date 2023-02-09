@@ -22,7 +22,7 @@ export default function Feedback() {
         slideGap="xs"
         align="center">
         {reviews.map(({ id, name, feedback, avatar }, index) => (
-          <Carousel.Slide>
+          <Carousel.Slide key={id}>
             <Paper
               shadow={"xs"}
               className="flex flex-col justify-center mx-auto w-[290px]  dark:bg-dark  bg-white p-4 border-2">

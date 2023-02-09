@@ -36,6 +36,9 @@ function Main() {
         )
       );
     });
+    return () => {
+      unsub();
+    };
   }, []);
 
   // WRAP PRODUCT DATA

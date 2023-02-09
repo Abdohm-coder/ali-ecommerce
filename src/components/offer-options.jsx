@@ -24,7 +24,7 @@ export default function OfferOptions() {
     id: uuidv4(),
   };
 
-  const [activeOffer, setOffer] = useState(1);
+  const [activeOffer, setOffer] = useState(0);
 
   const handleSubmitOffer = () => {
     setOrder(() => ({
@@ -69,7 +69,7 @@ export default function OfferOptions() {
                 رائع لقد وفرت
               </strong>
               <strong className="text-discount-value">
-                {offer_options[activeOffer]?.discount_value || 0} دج
+                {offer_options[activeOffer - 1]?.discount_value || 0} دج
               </strong>
             </div>
             {/* <Badge text={data.offer_options[activeOffer].badge} /> */}

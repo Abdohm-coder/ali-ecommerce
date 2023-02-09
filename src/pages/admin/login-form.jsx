@@ -12,6 +12,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../utils/routes";
 
 const loginSchema = yup.object().shape({
   email: yup
@@ -22,6 +24,8 @@ const loginSchema = yup.object().shape({
 });
 
 export default function AuthenticationForm({ logIn }) {
+  let navigate = useNavigate();
+
   const [error, setError] = useState(false);
   const {
     register,
@@ -78,6 +82,12 @@ export default function AuthenticationForm({ logIn }) {
             type="submit"
             className="hover:bg-btn-dark bg-btn-dark/90 flex-1">
             تسجيل الدخول
+          </Button>
+          <Button
+            onClick={() => navigate(ROUTES.HOME)}
+            variant="outline"
+            className="hover:bg-green-600 hover:text-white flex-1">
+            الصفحة الرئيسية
           </Button>
         </Group>
         {error && (
